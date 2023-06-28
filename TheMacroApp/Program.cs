@@ -87,16 +87,16 @@ namespace TheMacroApp
             switch (e.Key)
             {
                 case Keys.M: ShowForm(); break;
-                case Keys.D0: MacroManager.Run(0); break;
-                case Keys.D1: MacroManager.Run(1); break;
-                case Keys.D2: MacroManager.Run(2); break;
-                case Keys.D3: MacroManager.Run(3); break;
-                case Keys.D4: MacroManager.Run(4); break;
-                case Keys.D5: MacroManager.Run(5); break;
-                case Keys.D6: MacroManager.Run(6); break;
-                case Keys.D7: MacroManager.Run(7); break;
-                case Keys.D8: MacroManager.Run(8); break;
-                case Keys.D9: MacroManager.Run(9); break;
+                case Keys.D0: Manager.RunMacro(0); break;
+                case Keys.D1: Manager.RunMacro(1); break;
+                case Keys.D2: Manager.RunMacro(2); break;
+                case Keys.D3: Manager.RunMacro(3); break;
+                case Keys.D4: Manager.RunMacro(4); break;
+                case Keys.D5: Manager.RunMacro(5); break;
+                case Keys.D6: Manager.RunMacro(6); break;
+                case Keys.D7: Manager.RunMacro(7); break;
+                case Keys.D8: Manager.RunMacro(8); break;
+                case Keys.D9: Manager.RunMacro(9); break;
                 default:
                     MessageBox.Show($"Key {e.Key} not registered.");
                     break;

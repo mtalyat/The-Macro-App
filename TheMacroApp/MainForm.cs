@@ -17,6 +17,8 @@ namespace TheMacroApp
 
         private Button[] _macroButtons;
 
+        private ConfigureForm? _configureForm;
+
         public MainForm()
         {
             FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), TheMacroApplicationContext.APP_SYSTEM_NAME);
@@ -24,11 +26,14 @@ namespace TheMacroApp
             // initialize everything else
             InitializeComponent();
 
+            // load data
+            Manager.Load();
+
             // initialize self
             Text = TheMacroApplicationContext.APP_NAME;
 
             // collect buttons for later use
-            _macroButtons = new Button[MacroManager.MACRO_COUNT]
+            _macroButtons = new Button[AppData.MACRO_COUNT]
             {
                 Button0, Button1, Button2, Button3, Button4, Button5, Button6, Button7, Button8, Button9
             };
@@ -44,16 +49,24 @@ namespace TheMacroApp
             }
 
             // update all buttons with existing macros
-            for (int i = 0; i < MacroManager.MACRO_COUNT; i++)
+            for (int i = 0; i < AppData.MACRO_COUNT; i++)
             {
-                SetMacroButtonText(i, MacroManager.Get(i)?.ToString() ?? MacroData.EMPTY_TEXT);
+                SetMacroButtonText(i, Manager.Data.GetMacro(i)?.ToString() ?? MacroData.EMPTY_TEXT);
             }
+        }
+
+        // after form has closed
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Manager.Save();
         }
 
         private void SetMacro(int index, MacroData? data)
         {
             // set in manager
-            MacroManager.Set(index, data);
+            Manager.Data.SetMacro(index, data);
+
+            Manager.Save();
 
             // set button display
             SetMacroButtonText(index, data?.ToString() ?? MacroData.EMPTY_TEXT);
@@ -115,6 +128,29 @@ namespace TheMacroApp
                     SelectNewMacro(index); break;
                 case MouseButtons.Right:
                     ClearMacro(index); break;
+            }
+        }
+
+        private void ConfigureButton_Click(object sender, EventArgs e)
+        {
+            if(_configureForm == null)
+            {
+                _configureForm = new ConfigureForm();
+                _configureForm.Show();
+                _configureForm.FormClosed += (object? sender, FormClosedEventArgs e) => { _configureForm = null; };
+            }
+            else
+            {
+                _configureForm.Activate();
+            }
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            // close form on escape
+            if(e.KeyCode == Keys.Escape)
+            {
+                Close();
             }
         }
     }

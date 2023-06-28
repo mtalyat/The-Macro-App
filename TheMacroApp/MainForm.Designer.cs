@@ -52,6 +52,7 @@
             this.Button0 = new System.Windows.Forms.Button();
             this.Label0 = new System.Windows.Forms.Label();
             this.InfoLabel = new System.Windows.Forms.Label();
+            this.ConfigureButton = new System.Windows.Forms.Button();
             this.HotKeysGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,10 +60,10 @@
             // 
             this.OpenFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.OpenFolderButton.Location = new System.Drawing.Point(12, 418);
+            this.OpenFolderButton.Location = new System.Drawing.Point(12, 461);
             this.OpenFolderButton.Name = "OpenFolderButton";
             this.OpenFolderButton.Size = new System.Drawing.Size(477, 29);
-            this.OpenFolderButton.TabIndex = 0;
+            this.OpenFolderButton.TabIndex = 1;
             this.OpenFolderButton.Text = "Open Folder";
             this.OpenFolderButton.UseVisualStyleBackColor = true;
             this.OpenFolderButton.Click += new System.EventHandler(this.OpenFolderButton_Click);
@@ -91,10 +92,10 @@
             this.HotKeysGroupBox.Controls.Add(this.Label1);
             this.HotKeysGroupBox.Controls.Add(this.Button0);
             this.HotKeysGroupBox.Controls.Add(this.Label0);
-            this.HotKeysGroupBox.Location = new System.Drawing.Point(12, 34);
+            this.HotKeysGroupBox.Location = new System.Drawing.Point(12, 42);
             this.HotKeysGroupBox.Name = "HotKeysGroupBox";
             this.HotKeysGroupBox.Size = new System.Drawing.Size(477, 378);
-            this.HotKeysGroupBox.TabIndex = 1;
+            this.HotKeysGroupBox.TabIndex = 2;
             this.HotKeysGroupBox.TabStop = false;
             this.HotKeysGroupBox.Text = "Hot Keys";
             // 
@@ -105,7 +106,7 @@
             this.Button9.Location = new System.Drawing.Point(29, 306);
             this.Button9.Name = "Button9";
             this.Button9.Size = new System.Drawing.Size(442, 29);
-            this.Button9.TabIndex = 19;
+            this.Button9.TabIndex = 10;
             this.Button9.Text = "None";
             this.Button9.UseVisualStyleBackColor = true;
             this.Button9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -126,7 +127,7 @@
             this.Button8.Location = new System.Drawing.Point(29, 271);
             this.Button8.Name = "Button8";
             this.Button8.Size = new System.Drawing.Size(442, 29);
-            this.Button8.TabIndex = 17;
+            this.Button8.TabIndex = 9;
             this.Button8.Text = "None";
             this.Button8.UseVisualStyleBackColor = true;
             this.Button8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -147,7 +148,7 @@
             this.Button7.Location = new System.Drawing.Point(29, 236);
             this.Button7.Name = "Button7";
             this.Button7.Size = new System.Drawing.Size(442, 29);
-            this.Button7.TabIndex = 15;
+            this.Button7.TabIndex = 8;
             this.Button7.Text = "None";
             this.Button7.UseVisualStyleBackColor = true;
             this.Button7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -168,7 +169,7 @@
             this.Button6.Location = new System.Drawing.Point(29, 201);
             this.Button6.Name = "Button6";
             this.Button6.Size = new System.Drawing.Size(442, 29);
-            this.Button6.TabIndex = 13;
+            this.Button6.TabIndex = 7;
             this.Button6.Text = "None";
             this.Button6.UseVisualStyleBackColor = true;
             this.Button6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -189,7 +190,7 @@
             this.Button5.Location = new System.Drawing.Point(29, 166);
             this.Button5.Name = "Button5";
             this.Button5.Size = new System.Drawing.Size(442, 29);
-            this.Button5.TabIndex = 11;
+            this.Button5.TabIndex = 6;
             this.Button5.Text = "None";
             this.Button5.UseVisualStyleBackColor = true;
             this.Button5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -210,7 +211,7 @@
             this.Button4.Location = new System.Drawing.Point(29, 131);
             this.Button4.Name = "Button4";
             this.Button4.Size = new System.Drawing.Size(442, 29);
-            this.Button4.TabIndex = 9;
+            this.Button4.TabIndex = 5;
             this.Button4.Text = "None";
             this.Button4.UseVisualStyleBackColor = true;
             this.Button4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -231,7 +232,7 @@
             this.Button3.Location = new System.Drawing.Point(29, 96);
             this.Button3.Name = "Button3";
             this.Button3.Size = new System.Drawing.Size(442, 29);
-            this.Button3.TabIndex = 7;
+            this.Button3.TabIndex = 4;
             this.Button3.Text = "None";
             this.Button3.UseVisualStyleBackColor = true;
             this.Button3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -252,7 +253,7 @@
             this.Button2.Location = new System.Drawing.Point(29, 61);
             this.Button2.Name = "Button2";
             this.Button2.Size = new System.Drawing.Size(442, 29);
-            this.Button2.TabIndex = 5;
+            this.Button2.TabIndex = 3;
             this.Button2.Text = "None";
             this.Button2.UseVisualStyleBackColor = true;
             this.Button2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -273,7 +274,7 @@
             this.Button1.Location = new System.Drawing.Point(29, 26);
             this.Button1.Name = "Button1";
             this.Button1.Size = new System.Drawing.Size(442, 29);
-            this.Button1.TabIndex = 3;
+            this.Button1.TabIndex = 2;
             this.Button1.Text = "None";
             this.Button1.UseVisualStyleBackColor = true;
             this.Button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -294,7 +295,7 @@
             this.Button0.Location = new System.Drawing.Point(29, 341);
             this.Button0.Name = "Button0";
             this.Button0.Size = new System.Drawing.Size(442, 29);
-            this.Button0.TabIndex = 1;
+            this.Button0.TabIndex = 11;
             this.Button0.Text = "None";
             this.Button0.UseVisualStyleBackColor = true;
             this.Button0.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacroButton_MouseClick);
@@ -320,22 +321,38 @@
             this.InfoLabel.Text = "Press Ctrl + Alt + # to run a macro, where # is the respective number.";
             this.InfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // ConfigureButton
+            // 
+            this.ConfigureButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConfigureButton.Location = new System.Drawing.Point(12, 426);
+            this.ConfigureButton.Name = "ConfigureButton";
+            this.ConfigureButton.Size = new System.Drawing.Size(477, 29);
+            this.ConfigureButton.TabIndex = 0;
+            this.ConfigureButton.Text = "Configure";
+            this.ConfigureButton.UseVisualStyleBackColor = true;
+            this.ConfigureButton.Click += new System.EventHandler(this.ConfigureButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(501, 459);
+            this.ClientSize = new System.Drawing.Size(501, 502);
+            this.Controls.Add(this.ConfigureButton);
             this.Controls.Add(this.InfoLabel);
             this.Controls.Add(this.HotKeysGroupBox);
             this.Controls.Add(this.OpenFolderButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainForm";
+            this.Text = "The Super Macro App";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.HotKeysGroupBox.ResumeLayout(false);
             this.HotKeysGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -368,5 +385,6 @@
         private Button Button8;
         private Label Label8;
         private Label InfoLabel;
+        private Button ConfigureButton;
     }
 }

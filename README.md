@@ -1,6 +1,8 @@
 # The Super Macro App
 A Windows application, meant to be able to create custom macros at the touch of a hot key.
 
+![The main application screen.](Images/MainApplication.png)
+
 ## Installing
 For the moment, installing is rather hands on. An installer will come in the future. For now, follow these steps:
 
@@ -26,6 +28,8 @@ Each macro must be associated with a script of some sort. The user can customize
 | --- | --- | --- | --- |
 | Batch | `.bat .cmd` | | {file} {args} |
 | Python | `.py` | C:\Users\user\AppData\Local\Programs\Python\Python311\python.exe | {file} {args} |
+
+![An example of a script configured in the application.](Images/Configure.png)
 
 To set the script for a macro, left click on the button to the right of the corresponding number key number you would like to set. Doing so will open a prompt, allowing you to select a file and enter some command line arguments (if applicable) for the macro app to run. After doing so, the button text will be updated with the name of the file and the arguments. To clear the macro, right click on the button.
 

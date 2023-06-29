@@ -23,25 +23,44 @@ If you wish to have the program always start when you turn on your computer, ple
 ### Guide
 The Super Macro App lives in the System Tray. It can be accessed at any time by going to the system tray and clicking on it. It can also be forcibly closed by right clicking on it there, and hitting "Exit". It can also be accessed via the keyboard hot key: Ctrl + Alt + M.
 
-Each macro must be associated with a script of some sort. The user can customize how each script is ran by clicking the Configure button. After doing so, a new script type can be added by pressing add. After doing so, information can be filled out for the type of script. Here are some working examples:
-| Name | Extensions | Executable | Command Format |
-| --- | --- | --- | --- |
-| Batch | `.bat .cmd` | | {file} {args} |
-| Python | `.py` | C:\Users\user\AppData\Local\Programs\Python\Python311\python.exe | {file} {args} |
-| Text | `.txt` | explorer.exe | {file} |
+Each macro must be associated with a script of some sort. The user can customize how each script is ran by clicking the Configure button. After doing so, a new script type can be added by pressing add. After doing so, information can be filled out for the type of script. Here is an example of the window in use:
 
 ![An example of a script configured in the application.](Images/Configure.png)
 
-To set the script for a macro, left click on the button to the right of the corresponding number key number you would like to set. Doing so will open a prompt, allowing you to select a file and enter some command line arguments (if applicable) for the macro app to run. After doing so, the button text will be updated with the name of the file and the arguments. To clear the macro, right click on the button. Here is an example:
+To set the script for a macro, left click on the button to the right of the corresponding number key number you would like to set. Doing so will open a window, allowing you to edit the macro data. You can set the path to the file the macro will perform on, and any command line arguments you would like to provide. You can also decide if you want the terminal to stay hidden, or to show for this specific macro. Lastly, select the hot key combination for this macro.
+
+**REQUIREMENTS FOR MACRO HOT KEYS:**
+1. The hot key must have a key selected.
+2. The hot key must have at least one modifier.
+3. The hot key must be in use by another macro, or another process/application on your device.
+
+Fulfilling all of these requirements will show the macro as VALID. If any of the requirements are omitted, INVALID will be shown, and the macro will not work.
+
+Here is an example of a macro being edited:
+
 ![An example of a macro configured in the application.](Images/ConfigureMacro.png)
 
-After the macros have been set, press Ctrl + Alt + #, where # is the number key of the macro you would like to run. After doing so, the script will run in the background. As of right now, there is no way to see the input or output of the script.
+After the macros have been set, press the Hot Key combination of keys of the macro you would like to run. After doing so, the script will run, according to your specifications. If Terminal is set to Show, then the terminal will pop up while the script is being ran. Otherwise, it will never be seen.
 
 ### Hot Keys
 | Combination | Action |
 | --- | --- |
 | Ctrl + Alt + M | Shows the Super Macro App. |
-| Ctrl + Alt + [0-9] | Runs the macro of the given number key. |
+
+## Examples
+The following contains some examples for script configurations and macros.
+### Script Configurations
+| Name | Extensions | Executable | Command Format |
+| --- | --- | --- | --- |
+| Batch | `.bat .cmd` | | {file} {args} |
+| Executable | `.exe` | | {file} {args} |
+| Python | `.py` | C:\Users\user\AppData\Local\Programs\Python\Python311\python.exe | {file} {args} |
+| Text | `.txt` | notepad.exe | {file} |
+### Macros
+| Path | Arguments | Terminal | Hot Key | Description |
+| --- | --- | --- | --- | -- |
+| notepad.exe | | Hide | Windows + Shift + N | Opens a blank notepad. |
+| C:/Users/user/Documents/SuperMacroApp/test.cmd | | Hide | Ctrl + Alt + 1 | Runs a Batch script. |
 
 ## Todo/Possible Ideas
 

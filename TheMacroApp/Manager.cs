@@ -34,21 +34,26 @@ namespace TheMacroApp
 
         #region Running
 
-        public static void RunMacro(int index)
+        public static void RunMacro(MacroKey key)
         {
-            // get path for index
-            MacroData? macroData = Data.GetMacro(index);
+            // use key to find macro data
+            MacroData? macroData = Data.FindMacro(key);
 
-            // if no data saved, do nothing
-            if (macroData == null || string.IsNullOrEmpty(macroData.Path))
+            // do nothing if not found
+            if(macroData == null)
             {
                 return;
             }
 
-            // if no file found, let user know, then do nothing
-            if (!File.Exists(macroData.Path))
+            // run macro
+            RunMacro(macroData);
+        }
+
+        public static void RunMacro(MacroData macroData)
+        {
+            // if no data saved, do nothing
+            if (macroData == null || string.IsNullOrEmpty(macroData.Path))
             {
-                ShowWarning($"No script found for macro {index} at path \"{macroData.Path}\".", "No script found.");
                 return;
             }
 
@@ -112,10 +117,13 @@ namespace TheMacroApp
 
                 // run command
                 process.StartInfo = info;
-                if (process.Start())
+
+                try
                 {
-                    // wait for command to complete
-                    //process.WaitForExit();
+                    process.Start();
+                } catch (Exception ex)
+                {
+                    ShowError($"Process failed to start: {ex.Message}", "Process failed.");
                 }
             }
         }
@@ -127,6 +135,11 @@ namespace TheMacroApp
         private static void ShowWarning(string text, string caption)
         {
             MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private static void ShowError(string text, string caption)
+        {
+            MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         #endregion

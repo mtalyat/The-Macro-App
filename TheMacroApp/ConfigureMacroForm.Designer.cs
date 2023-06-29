@@ -38,16 +38,27 @@
             this.OpenFileDialogPathButton = new System.Windows.Forms.Button();
             this.ResetMacroButton = new System.Windows.Forms.Button();
             this.DiscardButton = new System.Windows.Forms.Button();
+            this.HotKeyGroupBox = new System.Windows.Forms.GroupBox();
+            this.HotKeyErrorLabel = new System.Windows.Forms.Label();
+            this.WindowsCheckBox = new System.Windows.Forms.CheckBox();
+            this.ShiftCheckBox = new System.Windows.Forms.CheckBox();
+            this.CtrlCheckBox = new System.Windows.Forms.CheckBox();
+            this.AltCheckBox = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.KeyComboBox = new System.Windows.Forms.ComboBox();
+            this.ApplyButton = new System.Windows.Forms.Button();
+            this.HotKeyGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // DoneButton
             // 
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DoneButton.Location = new System.Drawing.Point(799, 148);
+            this.DoneButton.Location = new System.Drawing.Point(799, 262);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(94, 29);
             this.DoneButton.TabIndex = 0;
-            this.DoneButton.Text = "Done";
+            this.DoneButton.Text = "OK";
             this.DoneButton.UseVisualStyleBackColor = true;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
@@ -121,7 +132,7 @@
             // 
             this.ResetMacroButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetMacroButton.Location = new System.Drawing.Point(124, 112);
+            this.ResetMacroButton.Location = new System.Drawing.Point(124, 225);
             this.ResetMacroButton.Name = "ResetMacroButton";
             this.ResetMacroButton.Size = new System.Drawing.Size(769, 29);
             this.ResetMacroButton.TabIndex = 8;
@@ -132,7 +143,7 @@
             // DiscardButton
             // 
             this.DiscardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.DiscardButton.Location = new System.Drawing.Point(12, 148);
+            this.DiscardButton.Location = new System.Drawing.Point(12, 262);
             this.DiscardButton.Name = "DiscardButton";
             this.DiscardButton.Size = new System.Drawing.Size(94, 29);
             this.DiscardButton.TabIndex = 9;
@@ -140,13 +151,130 @@
             this.DiscardButton.UseVisualStyleBackColor = true;
             this.DiscardButton.Click += new System.EventHandler(this.DiscardButton_Click);
             // 
+            // HotKeyGroupBox
+            // 
+            this.HotKeyGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.HotKeyGroupBox.Controls.Add(this.HotKeyErrorLabel);
+            this.HotKeyGroupBox.Controls.Add(this.WindowsCheckBox);
+            this.HotKeyGroupBox.Controls.Add(this.ShiftCheckBox);
+            this.HotKeyGroupBox.Controls.Add(this.CtrlCheckBox);
+            this.HotKeyGroupBox.Controls.Add(this.AltCheckBox);
+            this.HotKeyGroupBox.Controls.Add(this.label5);
+            this.HotKeyGroupBox.Controls.Add(this.label4);
+            this.HotKeyGroupBox.Controls.Add(this.KeyComboBox);
+            this.HotKeyGroupBox.Location = new System.Drawing.Point(124, 112);
+            this.HotKeyGroupBox.Name = "HotKeyGroupBox";
+            this.HotKeyGroupBox.Size = new System.Drawing.Size(769, 107);
+            this.HotKeyGroupBox.TabIndex = 10;
+            this.HotKeyGroupBox.TabStop = false;
+            this.HotKeyGroupBox.Text = "Hot Key";
+            // 
+            // HotKeyErrorLabel
+            // 
+            this.HotKeyErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.HotKeyErrorLabel.BackColor = System.Drawing.Color.Lime;
+            this.HotKeyErrorLabel.Location = new System.Drawing.Point(6, 84);
+            this.HotKeyErrorLabel.Name = "HotKeyErrorLabel";
+            this.HotKeyErrorLabel.Size = new System.Drawing.Size(757, 20);
+            this.HotKeyErrorLabel.TabIndex = 7;
+            this.HotKeyErrorLabel.Text = "Hot Key is VALID.";
+            this.HotKeyErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // WindowsCheckBox
+            // 
+            this.WindowsCheckBox.AutoSize = true;
+            this.WindowsCheckBox.Location = new System.Drawing.Point(286, 60);
+            this.WindowsCheckBox.Name = "WindowsCheckBox";
+            this.WindowsCheckBox.Size = new System.Drawing.Size(92, 24);
+            this.WindowsCheckBox.TabIndex = 6;
+            this.WindowsCheckBox.Text = "Windows";
+            this.WindowsCheckBox.UseVisualStyleBackColor = true;
+            this.WindowsCheckBox.CheckedChanged += new System.EventHandler(this.WindowsCheckBox_CheckedChanged);
+            // 
+            // ShiftCheckBox
+            // 
+            this.ShiftCheckBox.AutoSize = true;
+            this.ShiftCheckBox.Location = new System.Drawing.Point(219, 60);
+            this.ShiftCheckBox.Name = "ShiftCheckBox";
+            this.ShiftCheckBox.Size = new System.Drawing.Size(61, 24);
+            this.ShiftCheckBox.TabIndex = 5;
+            this.ShiftCheckBox.Text = "Shift";
+            this.ShiftCheckBox.UseVisualStyleBackColor = true;
+            this.ShiftCheckBox.CheckedChanged += new System.EventHandler(this.ShiftCheckBox_CheckedChanged);
+            // 
+            // CtrlCheckBox
+            // 
+            this.CtrlCheckBox.AutoSize = true;
+            this.CtrlCheckBox.Location = new System.Drawing.Point(159, 60);
+            this.CtrlCheckBox.Name = "CtrlCheckBox";
+            this.CtrlCheckBox.Size = new System.Drawing.Size(54, 24);
+            this.CtrlCheckBox.TabIndex = 4;
+            this.CtrlCheckBox.Text = "Ctrl";
+            this.CtrlCheckBox.UseVisualStyleBackColor = true;
+            this.CtrlCheckBox.CheckedChanged += new System.EventHandler(this.CtrlCheckBox_CheckedChanged);
+            // 
+            // AltCheckBox
+            // 
+            this.AltCheckBox.AutoSize = true;
+            this.AltCheckBox.Location = new System.Drawing.Point(103, 60);
+            this.AltCheckBox.Name = "AltCheckBox";
+            this.AltCheckBox.Size = new System.Drawing.Size(50, 24);
+            this.AltCheckBox.TabIndex = 3;
+            this.AltCheckBox.Text = "Alt";
+            this.AltCheckBox.UseVisualStyleBackColor = true;
+            this.AltCheckBox.CheckedChanged += new System.EventHandler(this.AltCheckBox_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 61);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(75, 20);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Modifiers:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(36, 20);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Key:";
+            // 
+            // KeyComboBox
+            // 
+            this.KeyComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.KeyComboBox.FormattingEnabled = true;
+            this.KeyComboBox.Location = new System.Drawing.Point(103, 26);
+            this.KeyComboBox.Name = "KeyComboBox";
+            this.KeyComboBox.Size = new System.Drawing.Size(660, 28);
+            this.KeyComboBox.TabIndex = 0;
+            this.KeyComboBox.SelectedIndexChanged += new System.EventHandler(this.KeyComboBox_SelectedIndexChanged);
+            // 
+            // ApplyButton
+            // 
+            this.ApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ApplyButton.Location = new System.Drawing.Point(699, 262);
+            this.ApplyButton.Name = "ApplyButton";
+            this.ApplyButton.Size = new System.Drawing.Size(94, 29);
+            this.ApplyButton.TabIndex = 11;
+            this.ApplyButton.Text = "Apply";
+            this.ApplyButton.UseVisualStyleBackColor = true;
+            this.ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
+            // 
             // ConfigureMacroForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.DiscardButton;
-            this.ClientSize = new System.Drawing.Size(905, 189);
+            this.ClientSize = new System.Drawing.Size(905, 303);
+            this.Controls.Add(this.ApplyButton);
+            this.Controls.Add(this.HotKeyGroupBox);
             this.Controls.Add(this.DiscardButton);
             this.Controls.Add(this.ResetMacroButton);
             this.Controls.Add(this.OpenFileDialogPathButton);
@@ -159,12 +287,14 @@
             this.Controls.Add(this.DoneButton);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(246, 236);
+            this.MinimumSize = new System.Drawing.Size(246, 350);
             this.Name = "ConfigureMacroForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Configure Macro";
             this.Load += new System.EventHandler(this.ConfigureMacroForm_Load);
+            this.HotKeyGroupBox.ResumeLayout(false);
+            this.HotKeyGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,5 +312,15 @@
         private Button OpenFileDialogPathButton;
         private Button ResetMacroButton;
         private Button DiscardButton;
+        private GroupBox HotKeyGroupBox;
+        private Label label4;
+        private ComboBox KeyComboBox;
+        private CheckBox AltCheckBox;
+        private Label label5;
+        private CheckBox WindowsCheckBox;
+        private CheckBox ShiftCheckBox;
+        private CheckBox CtrlCheckBox;
+        private Label HotKeyErrorLabel;
+        private Button ApplyButton;
     }
 }

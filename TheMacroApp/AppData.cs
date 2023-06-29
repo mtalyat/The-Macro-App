@@ -10,18 +10,16 @@ namespace TheMacroApp
 {
     internal class AppData
     {
-        public const int MACRO_COUNT = 10;
-
         public static readonly string FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), TheMacroApplicationContext.APP_SYSTEM_NAME);
 
         [JsonInclude]
-        public MacroData?[] Macros { get; private set; } = new MacroData[MACRO_COUNT];
+        public List<MacroData> Macros { get; private set; } = new List<MacroData>();
         [JsonInclude]
         public List<ScriptData> Scripts { get; private set; } = new List<ScriptData>();
 
         #region Managing
 
-        public void SetMacro(int index, MacroData? data)
+        public void SetMacro(int index, MacroData data)
         {
             // if invalid index, do nothing
             if (IsInvalidIndex(index))
@@ -32,7 +30,15 @@ namespace TheMacroApp
             Macros[index] = data;
         }
 
-        public void DeleteMacro(int index) => SetMacro(index, null);
+        public void AddMacro(MacroData data)
+        {
+            Macros.Add(data);
+        }
+
+        public void DeleteMacro(int index)
+        {
+            Macros.RemoveAt(index);
+        }
 
         public MacroData? GetMacro(int index)
         {
@@ -44,6 +50,19 @@ namespace TheMacroApp
 
             // return path for macro
             return Macros[index];
+        }
+
+        public MacroData? FindMacro(MacroKey key)
+        {
+            foreach(MacroData macro in Macros)
+            {
+                if(macro.Key == key)
+                {
+                    return macro;
+                }
+            }
+
+            return null;
         }
 
         public void SetScript(ScriptData data, bool addIfNotFound = true)
@@ -140,9 +159,9 @@ namespace TheMacroApp
 
         #region Utility
 
-        private static bool IsInvalidIndex(int index)
+        private bool IsInvalidIndex(int index)
         {
-            return index < 0 || index >= MACRO_COUNT;
+            return index < 0 || index >= Macros.Count;
         }
 
         #endregion

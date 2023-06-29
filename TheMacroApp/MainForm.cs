@@ -27,10 +27,7 @@ namespace TheMacroApp
             Text = TheMacroApplicationContext.APP_NAME;
 
             // collect buttons for later use
-            _macroButtons = new Button[AppData.MACRO_COUNT]
-            {
-                Button0, Button1, Button2, Button3, Button4, Button5, Button6, Button7, Button8, Button9
-            };
+            _macroButtons = new Button[0];
         }
 
         // when main form loads
@@ -42,11 +39,8 @@ namespace TheMacroApp
                 Directory.CreateDirectory(AppData.FOLDER_PATH);
             }
 
-            // update all buttons with existing macros
-            for (int i = 0; i < AppData.MACRO_COUNT; i++)
-            {
-                SetMacroButtonText(i, Manager.Data.GetMacro(i)?.ToString() ?? MacroData.EMPTY_TEXT);
-            }
+            // load buttons
+            UpdateHotKeys();
         }
 
         // after form has closed
@@ -55,7 +49,7 @@ namespace TheMacroApp
             Manager.Save();
         }
 
-        private void SetMacro(int index, MacroData? data)
+        private void SetMacro(int index, MacroData data)
         {
             // set in manager
             Manager.Data.SetMacro(index, data);
@@ -63,7 +57,7 @@ namespace TheMacroApp
             Manager.Save();
 
             // set button display
-            SetMacroButtonText(index, data?.ToString() ?? MacroData.EMPTY_TEXT);
+            SetMacroButtonText(index, data.ToString());
         }
 
         private void SetMacroButtonText(int index, string text)
@@ -94,9 +88,26 @@ namespace TheMacroApp
             }
         }
 
-        private void ClearMacro(int index)
+        private void DeleteMacro(int index)
         {
-            SetMacro(index, null);
+            // unregister macro, if it is
+            MacroData? data = Manager.Data.GetMacro(index);
+
+            if(data == null)
+            {
+                return;
+            }
+
+            data.Key.UnRegister();
+
+            // delete in mananger
+            Manager.Data.DeleteMacro(index);
+
+            // save updates
+            Manager.Save();
+
+            // update buttons
+            UpdateHotKeys();
         }
 
         private void MacroButton_MouseClick(object sender, MouseEventArgs e)
@@ -109,8 +120,20 @@ namespace TheMacroApp
                 case MouseButtons.Left:
                     EditMacro(index); break;
                 case MouseButtons.Right:
-                    ClearMacro(index); break;
+                    DeleteMacro(index); break;
             }
+        }
+
+        private void NewMacroButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            // create new macro and add it
+            Manager.Data.AddMacro(new MacroData());
+
+            // refresh list
+            UpdateHotKeys();
+
+            // edit new macro
+            EditMacro(Manager.Data.Macros.Count - 1);
         }
 
         private void ConfigureButton_Click(object sender, EventArgs e)
@@ -133,6 +156,57 @@ namespace TheMacroApp
             if(e.KeyCode == Keys.Escape)
             {
                 Close();
+            }
+        }
+
+        private Button CreateHotKeyButton(string text, MouseEventHandler handler)
+        {
+            Button button = new Button()
+            {
+                Text = text,
+                Size = new Size(HotKeysFlowLayoutPanel.Width - 30, 29),
+                TextAlign = ContentAlignment.MiddleLeft,
+            };
+            button.MouseUp += handler;
+            return button;
+        }
+
+        private void UpdateHotKeys()
+        {
+            // get macro keys
+            MacroData[] macros = Manager.Data.Macros.ToArray();
+
+            // get scroll
+            int scroll = HotKeysFlowLayoutPanel.VerticalScroll.Value;
+
+            // remove old buttons
+            HotKeysFlowLayoutPanel.Controls.Clear();
+            _macroButtons = new Button[macros.Length];
+
+            Button temp;
+
+            // create new buttons for each macro data
+            for (int i = 0; i < macros.Length; i++)
+            {
+                temp = CreateHotKeyButton(macros[i].ToString(), MacroButton_MouseClick);
+                _macroButtons[i] = temp;
+                HotKeysFlowLayoutPanel.Controls.Add(temp);
+            }
+
+            // add one last button for adding new hot keys
+            temp = CreateHotKeyButton("New...", NewMacroButton_MouseClick);
+            HotKeysFlowLayoutPanel.Controls.Add(temp);
+
+            // reassign scroll
+            HotKeysFlowLayoutPanel.VerticalScroll.Value = scroll;
+        }
+
+        private void HotKeysFlowLayoutPanel_Resize(object sender, EventArgs e)
+        {
+            // resize all widths
+            foreach(Control control in HotKeysFlowLayoutPanel.Controls)
+            {
+                control.Size = new Size(HotKeysFlowLayoutPanel.Width - 30, control.Size.Height);
             }
         }
     }

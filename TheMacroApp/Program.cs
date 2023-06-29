@@ -29,12 +29,18 @@ namespace TheMacroApp
         public const string APP_NAME = "The Super Macro App";
         public const string APP_SYSTEM_NAME = "SuperMacroApp"; // name that is safe to use in file system
 
+        public static TheMacroApplicationContext? ActiveContext { get; private set; }
+
         private NotifyIcon _trayIcon;
         private KeyboardHook _keyboardHook;
+        public KeyboardHook KeyboardHook => _keyboardHook;
         private MainForm? _form;
+        public MainForm? Form => _form;
 
         public TheMacroApplicationContext()
         {
+            ActiveContext = this;
+
             // create menu strip
             ContextMenuStrip strip = new ContextMenuStrip()
             {
@@ -55,23 +61,27 @@ namespace TheMacroApp
             };
             _trayIcon.MouseClick += Open;
 
-            // register hotkeys
+            // initialize hook for hotkeys, so their input is recognized
             _keyboardHook = new KeyboardHook();
             _keyboardHook.KeyPressed += HotkeyPressed;
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.M);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D1);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D2);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D3);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D4);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D5);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D6);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D7);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D8);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D9);
-            _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D0);
+            _keyboardHook.RegisterHotKey(ModKeys.Ctrl | ModKeys.Alt, Keys.M); // default application shortcut
 
             // load macro data
             Manager.Load();
+
+            // register all macro keys
+            foreach(MacroData macro in Manager.Data.Macros)
+            {
+                macro.Key.Register();
+            }
+        }
+
+        ~TheMacroApplicationContext()
+        {
+            if(ActiveContext == this)
+            {
+                ActiveContext = null;
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -87,22 +97,15 @@ namespace TheMacroApp
 
         private void HotkeyPressed(object? sender, KeyPressedEventArgs e)
         {
-            switch (e.Key)
+            if(e.Key == Keys.M)
             {
-                case Keys.M: ShowForm(); break;
-                case Keys.D0: Manager.RunMacro(0); break;
-                case Keys.D1: Manager.RunMacro(1); break;
-                case Keys.D2: Manager.RunMacro(2); break;
-                case Keys.D3: Manager.RunMacro(3); break;
-                case Keys.D4: Manager.RunMacro(4); break;
-                case Keys.D5: Manager.RunMacro(5); break;
-                case Keys.D6: Manager.RunMacro(6); break;
-                case Keys.D7: Manager.RunMacro(7); break;
-                case Keys.D8: Manager.RunMacro(8); break;
-                case Keys.D9: Manager.RunMacro(9); break;
-                default:
-                    MessageBox.Show($"Key {e.Key} not registered.");
-                    break;
+                // if key to show, show
+                ShowForm();
+            }
+            else
+            {
+                // else run macro
+                Manager.RunMacro(new MacroKey(e));
             }
         }
 
@@ -216,14 +219,26 @@ namespace TheMacroApp
         /// </summary>
         /// <param name="modifier">The modifiers that are associated with the hot key.</param>
         /// <param name="key">The key itself that is associated with the hot key.</param>
-        public void RegisterHotKey(ModKeys modifier, Keys key)
+        public int RegisterHotKey(ModKeys modifier, Keys key)
         {
             // increment the counter.
-            _currentId = _currentId + 1;
+            _currentId++;
 
             // register the hot key.
             if (!RegisterHotKey(_window.Handle, _currentId, (uint)modifier, (uint)key))
+            {
                 throw new InvalidOperationException("Couldn’t register the hot key.");
+            }
+
+            return _currentId;
+        }
+
+        public void UnregisterHotKey(int id)
+        {
+            if(!UnregisterHotKey(_window.Handle, id))
+            {
+                throw new InvalidOperationException("Couldn’t unregister the hot key.");
+            }
         }
 
         /// <summary>
@@ -279,8 +294,9 @@ namespace TheMacroApp
     [Flags]
     public enum ModKeys : uint
     {
+        None = 0,
         Alt = 1,
-        Control = 1 << 1,
+        Ctrl = 1 << 1,
         Shift = 1 << 2,
         Win = 1 << 3
     }

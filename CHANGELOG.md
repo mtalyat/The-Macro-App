@@ -1,8 +1,18 @@
 # Changelog
 
+## 1.2.0
+* Changed the macro configuration window to follow an OK APPLY CANCEL pattern.
+* Changed the macro list so it will display all the macro information: the key combination, followed by the command that will be ran in the terminal.
+* Added the ability to set custom key combinations for each macro, instead of being limited to Ctrl + Alt + Number Key.
+* The application will let you know if a key combination is VALID or INVALID.Check the README for more info.
+* Changed the main window to allow for an infinite number of macros to be set.
+* Fixed err with the executable path for Text files in the README.
+* Updated README with the new user interfaces.
+* Updated README with more examples.
+
 ## 1.1.1
 * Fixed a bug when opening application with an empty appdata json file.
-* Fixed a bug that input fields would not be disabled when there were no script types upon opening the configure scripts form. 
+* Fixed a bug that input fields would not be disabled when there were no script types upon opening the configure scripts window. 
 * Changed the way macros are added, so that they can be edited instead of reset from scratch.
 * Changed terminal showing customization from the script type level to the individual macro level.
 * Updated README with more examples.

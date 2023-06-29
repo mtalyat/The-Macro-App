@@ -26,22 +26,44 @@ namespace TheMacroApp
         private void ConfigureMacroForm_Load(object sender, EventArgs e)
         {
             TerminalShowOptions[] options = Enum.GetValues<TerminalShowOptions>();
+            Keys[] keys = Enum.GetValues<Keys>();
 
-            // set combo box
+            // set data
             TerminalComboBox.DataSource = options;
+            KeyComboBox.DataSource = keys;
 
             // load from macro
             PathTextBox.Text = _macroData.Path;
             ArgumentsTextBox.Text = _macroData.Args;
             TerminalComboBox.SelectedIndex = Array.IndexOf(options, _macroData.TerminalOption);
+
+            KeyComboBox.SelectedIndex = Array.IndexOf(keys, _macroData.Key.Key);
+            AltCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Alt);
+            CtrlCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Ctrl);
+            ShiftCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Shift);
+            WindowsCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Win);
+
+            // update key view
+            OnKeyChange();
         }
 
-        private void DoneButton_Click(object sender, EventArgs e)
+        private void ApplyValuesToMacro()
         {
             // set values to macro
             _macroData.Path = PathTextBox.Text;
             _macroData.Args = ArgumentsTextBox.Text;
             _macroData.TerminalOption = TerminalComboBox.SelectedItem as TerminalShowOptions? ?? TerminalShowOptions.Hide;
+
+            _macroData.Key.Key = KeyComboBox.SelectedItem as Keys? ?? Keys.None;
+            _macroData.Key.SetModifiers(AltCheckBox.Checked, CtrlCheckBox.Checked, ShiftCheckBox.Checked, WindowsCheckBox.Checked);
+
+            // officially re-register the key
+            _macroData.Key.UpdateRegistration();
+        }
+
+        private void DoneButton_Click(object sender, EventArgs e)
+        {
+            ApplyValuesToMacro();
 
             // set result
             DialogResult = DialogResult.OK;
@@ -75,12 +97,82 @@ namespace TheMacroApp
             PathTextBox.Text = string.Empty;
             ArgumentsTextBox.Text = string.Empty;
             TerminalComboBox.SelectedIndex = 0;
+            KeyComboBox.SelectedIndex = -1;
+            AltCheckBox.Checked = false;
+            CtrlCheckBox.Checked = false;
+            ShiftCheckBox.Checked = false;
+            WindowsCheckBox.Checked = false;
+            SetKeyValidity(false);
         }
 
         private void DiscardButton_Click(object sender, EventArgs e)
         {
             // do not set
             Close();
+        }
+
+        private void OnKeyChange()
+        {
+            MacroKey temp = new MacroKey();
+            temp.Key = KeyComboBox.SelectedItem as Keys? ?? Keys.None;
+            temp.SetModifiers(AltCheckBox.Checked, CtrlCheckBox.Checked, ShiftCheckBox.Checked, WindowsCheckBox.Checked);
+
+            // if equal to saved key, then it is valid
+            // (Windows would say it is not valid, but that is becuase the old key is using that value)
+            if(_macroData.Key.IsRegistered && _macroData.Key == temp)
+            {
+                SetKeyValidity(true);
+            }
+            else
+            {
+                // show if valid or not
+                SetKeyValidity(temp.CanRegister());
+            }            
+        }
+
+        private void SetKeyValidity(bool valid)
+        {
+            if(valid)
+            {
+                HotKeyErrorLabel.Text = "Hot Key is VALID.";
+                HotKeyErrorLabel.ForeColor = Color.White;
+                HotKeyErrorLabel.BackColor = Color.Green;
+            } else
+            {
+                HotKeyErrorLabel.Text = "Hot Key is INVALID.";
+                HotKeyErrorLabel.ForeColor = Color.White;
+                HotKeyErrorLabel.BackColor = Color.Red;
+            }
+        }
+
+        private void KeyComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OnKeyChange();
+        }
+
+        private void AltCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            OnKeyChange();
+        }
+
+        private void CtrlCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            OnKeyChange();
+        }
+
+        private void ShiftCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            OnKeyChange();
+        }
+
+        private void WindowsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            OnKeyChange();
+        }
+
+        private void ApplyButton_Click(object sender, EventArgs e)
+        {
+            ApplyValuesToMacro();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace TheMacroApp
     public class MacroData
     {
         [JsonIgnore]
-        public const string EMPTY_TEXT = "None";
+        public const string INVALID_TEXT = "None";
 
         [JsonInclude]
         public string Path;
@@ -22,12 +22,17 @@ namespace TheMacroApp
         public string Args;
         [JsonInclude]
         public TerminalShowOptions TerminalOption;
+        [JsonInclude]
+        public MacroKey Key;
+
+        public bool IsValid => Key.IsRegistered;
 
         public MacroData()
         {
             Path = string.Empty;
             Args = string.Empty;
             TerminalOption = TerminalShowOptions.Hide;
+            Key = new MacroKey();
         }
 
         public string ToCommand(string format)
@@ -40,23 +45,48 @@ namespace TheMacroApp
             Path = string.Empty;
             Args = string.Empty;
             TerminalOption = TerminalShowOptions.Hide;
+            Key = new MacroKey();
         }
 
         public override string ToString()
         {
-            if(string.IsNullOrWhiteSpace(Path))
+            // if key is not registered, so invalid
+            if(!IsValid)
             {
-                // no path, so no args
-                return EMPTY_TEXT;
+                return INVALID_TEXT;
             }
 
-            if (string.IsNullOrWhiteSpace(Args))
+            // find script data for this
+            ScriptData? scriptData = Manager.Data.FindScript(System.IO.Path.GetExtension(Path));
+
+            if (scriptData != null)
             {
-                return System.IO.Path.GetFileName(Path);
+                // script data, so use that
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append(Key);
+                sb.Append(" -> ");
+
+                if (scriptData.ExecutablePath.Length > 0)
+                {
+                    sb.Append(scriptData.ExecutablePath);
+                    sb.Append(' ');
+                }
+                sb.Append(ToCommand(scriptData.Format));
+
+                return sb.ToString();
             }
             else
             {
-                return $"{System.IO.Path.GetFileName(Path)} - {Args}";
+                // no script data, so just print key and file with args
+                if (string.IsNullOrWhiteSpace(Args))
+                {
+                    return $"{Key} -> {System.IO.Path.GetFileName(Path)}";
+                }
+                else
+                {
+                    return $"{Key} -> {System.IO.Path.GetFileName(Path)} {Args}";
+                }
             }
         }
     }

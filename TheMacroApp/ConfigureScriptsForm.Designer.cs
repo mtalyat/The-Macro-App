@@ -1,6 +1,6 @@
 ﻿namespace TheMacroApp
 {
-    partial class ConfigureForm
+    partial class ConfigureScriptsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -44,8 +44,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.OpenFileDialogForExecutableButton = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.ShowTerminalCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // ScriptsListBox
@@ -56,7 +54,7 @@
             this.ScriptsListBox.ItemHeight = 20;
             this.ScriptsListBox.Location = new System.Drawing.Point(12, 12);
             this.ScriptsListBox.Name = "ScriptsListBox";
-            this.ScriptsListBox.Size = new System.Drawing.Size(189, 204);
+            this.ScriptsListBox.Size = new System.Drawing.Size(189, 244);
             this.ScriptsListBox.TabIndex = 0;
             this.ScriptsListBox.SelectedIndexChanged += new System.EventHandler(this.ScriptsListBox_SelectedIndexChanged);
             // 
@@ -127,7 +125,7 @@
             // AddButton
             // 
             this.AddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.AddButton.Location = new System.Drawing.Point(12, 228);
+            this.AddButton.Location = new System.Drawing.Point(12, 269);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(88, 29);
             this.AddButton.TabIndex = 1;
@@ -138,7 +136,7 @@
             // DeleteButton
             // 
             this.DeleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.DeleteButton.Location = new System.Drawing.Point(113, 228);
+            this.DeleteButton.Location = new System.Drawing.Point(113, 269);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(88, 29);
             this.DeleteButton.TabIndex = 2;
@@ -149,7 +147,7 @@
             // DoneButton
             // 
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DoneButton.Location = new System.Drawing.Point(1072, 228);
+            this.DoneButton.Location = new System.Drawing.Point(1072, 269);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(94, 29);
             this.DoneButton.TabIndex = 8;
@@ -204,33 +202,13 @@
             this.OpenFileDialogForExecutableButton.UseVisualStyleBackColor = true;
             this.OpenFileDialogForExecutableButton.Click += new System.EventHandler(this.OpenFileDialogForExecutableButton_Click);
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(209, 205);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(109, 20);
-            this.label8.TabIndex = 13;
-            this.label8.Text = "Show Terminal:";
-            // 
-            // ShowTerminalCheckBox
-            // 
-            this.ShowTerminalCheckBox.AutoSize = true;
-            this.ShowTerminalCheckBox.Location = new System.Drawing.Point(362, 204);
-            this.ShowTerminalCheckBox.Name = "ShowTerminalCheckBox";
-            this.ShowTerminalCheckBox.Size = new System.Drawing.Size(18, 17);
-            this.ShowTerminalCheckBox.TabIndex = 14;
-            this.ShowTerminalCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // ConfigureForm
+            // ConfigureScriptsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.DoneButton;
-            this.ClientSize = new System.Drawing.Size(1178, 269);
+            this.ClientSize = new System.Drawing.Size(1178, 310);
             this.ControlBox = false;
-            this.Controls.Add(this.ShowTerminalCheckBox);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.OpenFileDialogForExecutableButton);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.ExecutableTextBox);
@@ -247,8 +225,8 @@
             this.Controls.Add(this.NameTextBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ScriptsListBox);
-            this.MinimumSize = new System.Drawing.Size(760, 226);
-            this.Name = "ConfigureForm";
+            this.MinimumSize = new System.Drawing.Size(760, 334);
+            this.Name = "ConfigureScriptsForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Configure";
@@ -276,7 +254,5 @@
         private Label label6;
         private Label label7;
         private Button OpenFileDialogForExecutableButton;
-        private Label label8;
-        private CheckBox ShowTerminalCheckBox;
     }
 }

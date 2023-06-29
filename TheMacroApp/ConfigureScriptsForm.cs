@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace TheMacroApp
 {
-    public partial class ConfigureForm : Form
+    public partial class ConfigureScriptsForm : Form
     {
         private ScriptData? _selected;
 
-        public ConfigureForm()
+        public ConfigureScriptsForm()
         {
             InitializeComponent();
         }
@@ -24,7 +24,7 @@ namespace TheMacroApp
             // get selected index
             int index = ScriptsListBox.SelectedIndex;
 
-            // load new data
+            // load scripts
             ScriptsListBox.DataSource = null;
             ScriptsListBox.DataSource = Manager.Data.GetScripts();
 
@@ -47,7 +47,6 @@ namespace TheMacroApp
                 _selected.SetExtensions(ExtensionsTextBox.Text);
                 _selected.ExecutablePath = ExecutableTextBox.Text;
                 _selected.Format = FormatTextBox.Text;
-                _selected.ShowTerminal = ShowTerminalCheckBox.Checked;
 
                 // set to manager
                 Manager.Data.SetScript(_selected, false);
@@ -61,6 +60,8 @@ namespace TheMacroApp
 
             // set selected to first in list
             ScriptsListBox.SelectedIndex = Math.Min(0, ScriptsListBox.Items.Count - 1);
+
+            UpdateFormComponents();
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
@@ -105,6 +106,11 @@ namespace TheMacroApp
             // load new data into boxes, or empty data if nothing selected
             _selected = ScriptsListBox.SelectedItem as ScriptData;
 
+            UpdateFormComponents();
+        }
+
+        private void UpdateFormComponents()
+        {
             bool isNotNull = _selected != null;
 
             // enable if there is something selected
@@ -112,27 +118,24 @@ namespace TheMacroApp
             ExtensionsTextBox.Enabled = isNotNull;
             ExecutableTextBox.Enabled = isNotNull;
             FormatTextBox.Enabled = isNotNull;
-            ShowTerminalCheckBox.Enabled = isNotNull;
 
-            if(_selected == null)
+            if (_selected == null)
             {
                 NameTextBox.Text = string.Empty;
                 ExecutableTextBox.Text = string.Empty;
                 ExtensionsTextBox.Text = string.Empty;
                 FormatTextBox.Text = string.Empty;
-                ShowTerminalCheckBox.Checked = false;
             }
             else
             {
                 // only change name box if needed
-                if(NameTextBox.Text.CompareTo(_selected.Name) != 0)
+                if (NameTextBox.Text.CompareTo(_selected.Name) != 0)
                 {
                     NameTextBox.Text = _selected.Name;
                 }
                 ExtensionsTextBox.Text = _selected.GetExtensions();
                 ExecutableTextBox.Text = _selected.ExecutablePath;
                 FormatTextBox.Text = _selected.Format;
-                ShowTerminalCheckBox.Checked = _selected.ShowTerminal;
             }
         }
 

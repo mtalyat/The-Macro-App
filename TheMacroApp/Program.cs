@@ -27,7 +27,7 @@ namespace TheMacroApp
     internal class TheMacroApplicationContext : ApplicationContext
     {
         public const string APP_NAME = "The Super Macro App";
-        public const string APP_SYSTEM_NAME = "SuperMacroApp";// name that is safe to use in file system
+        public const string APP_SYSTEM_NAME = "SuperMacroApp"; // name that is safe to use in file system
 
         private NotifyIcon _trayIcon;
         private KeyboardHook _keyboardHook;
@@ -69,6 +69,9 @@ namespace TheMacroApp
             _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D8);
             _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D9);
             _keyboardHook.RegisterHotKey(ModKeys.Control | ModKeys.Alt, Keys.D0);
+
+            // load macro data
+            Manager.Load();
         }
 
         protected override void Dispose(bool disposing)

@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,21 +14,14 @@ namespace TheMacroApp
 {
     public partial class MainForm : Form
     {
-        private readonly string FOLDER_PATH;
-
         private Button[] _macroButtons;
 
-        private ConfigureForm? _configureForm;
+        private ConfigureScriptsForm? _configureForm;
 
         public MainForm()
         {
-            FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), TheMacroApplicationContext.APP_SYSTEM_NAME);
-
             // initialize everything else
             InitializeComponent();
-
-            // load data
-            Manager.Load();
 
             // initialize self
             Text = TheMacroApplicationContext.APP_NAME;
@@ -43,9 +37,9 @@ namespace TheMacroApp
         private void MainForm_Load(object sender, EventArgs e)
         {
             // ensure folder exists
-            if (!Directory.Exists(FOLDER_PATH))
+            if (!Directory.Exists(AppData.FOLDER_PATH))
             {
-                Directory.CreateDirectory(FOLDER_PATH);
+                Directory.CreateDirectory(AppData.FOLDER_PATH);
             }
 
             // update all buttons with existing macros
@@ -81,34 +75,22 @@ namespace TheMacroApp
         {
             using (Process process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo("explorer.exe", FOLDER_PATH);
+                process.StartInfo = new ProcessStartInfo("explorer.exe", AppData.FOLDER_PATH);
                 process.Start();
             }
         }
 
-        private void SelectNewMacro(int index)
+        private void EditMacro(int index)
         {
-            // open file dialog for that macro
-            OpenFileDialog ofd = new OpenFileDialog()
-            {
-                Title = $"Select a script to run for macro {index}.",
-                Filter = "All Files (*.*) |*.*",
-                InitialDirectory = FOLDER_PATH,
-                RestoreDirectory = true,
-                CheckFileExists = true
-            };
+            // get existing macro, or create a new one
+            MacroData? macroData = Manager.Data.GetMacro(index) ?? new MacroData();
 
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                // file was found
-                // get command line arguments as well
-                EnterTextDialog etd = new EnterTextDialog("Enter command line arguments.");
+            ConfigureMacroForm cmf = new ConfigureMacroForm(macroData);
 
-                if (etd.ShowDialog() == DialogResult.OK)
-                {
-                    // set to found file
-                    SetMacro(index, new MacroData(ofd.FileName, etd.Content));
-                }
+            if(cmf.ShowDialog() == DialogResult.OK)
+            {
+                // macro values have been set
+                SetMacro(index, macroData);
             }
         }
 
@@ -125,7 +107,7 @@ namespace TheMacroApp
             switch (e.Button)
             {
                 case MouseButtons.Left:
-                    SelectNewMacro(index); break;
+                    EditMacro(index); break;
                 case MouseButtons.Right:
                     ClearMacro(index); break;
             }
@@ -135,7 +117,7 @@ namespace TheMacroApp
         {
             if(_configureForm == null)
             {
-                _configureForm = new ConfigureForm();
+                _configureForm = new ConfigureScriptsForm();
                 _configureForm.Show();
                 _configureForm.FormClosed += (object? sender, FormClosedEventArgs e) => { _configureForm = null; };
             }

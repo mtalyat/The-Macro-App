@@ -12,6 +12,8 @@ namespace TheMacroApp
     {
         public const int MACRO_COUNT = 10;
 
+        public static readonly string FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), TheMacroApplicationContext.APP_SYSTEM_NAME);
+
         [JsonInclude]
         public MacroData?[] Macros { get; private set; } = new MacroData[MACRO_COUNT];
         [JsonInclude]
@@ -122,6 +124,15 @@ namespace TheMacroApp
                 return null;
             }
 
+            string text = File.ReadAllText(path);
+
+            // if no text, return nothing
+            if(string.IsNullOrWhiteSpace(text))
+            {
+                return null;
+            }
+
+            // return parsed data
             return JsonSerializer.Deserialize<AppData>(File.ReadAllText(path));
         }
 

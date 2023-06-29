@@ -20,16 +20,26 @@ namespace TheMacroApp
         public string Path;
         [JsonInclude]
         public string Args;
+        [JsonInclude]
+        public TerminalShowOptions TerminalOption;
 
-        public MacroData(string path, string args)
+        public MacroData()
         {
-            Path = path;
-            Args = args;
+            Path = string.Empty;
+            Args = string.Empty;
+            TerminalOption = TerminalShowOptions.Hide;
         }
 
         public string ToCommand(string format)
         {
             return format.Replace(ScriptData.TEMPLATE_FILE, Path).Replace(ScriptData.TEMPLATE_ARGS, Args);
+        }
+
+        public void Reset()
+        {
+            Path = string.Empty;
+            Args = string.Empty;
+            TerminalOption = TerminalShowOptions.Hide;
         }
 
         public override string ToString()

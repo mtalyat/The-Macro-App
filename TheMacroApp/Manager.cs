@@ -97,13 +97,17 @@ namespace TheMacroApp
                     arguments = macroData.ToCommand(scriptData.Format);
                 }
 
+                bool showTerminal = macroData.TerminalOption == TerminalShowOptions.Show;
+
                 ProcessStartInfo info = new ProcessStartInfo()
                 {
                     FileName = fileName,
                     Arguments = arguments,
                     UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = !scriptData.ShowTerminal,
+                    RedirectStandardInput = false,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
+                    CreateNoWindow = !showTerminal,
                 };
 
                 // run command

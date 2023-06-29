@@ -21,8 +21,6 @@ namespace TheMacroApp
         public string ExecutablePath { get; set; }
         [JsonInclude]
         public string Format { get; set; }
-        [JsonInclude]
-        public bool ShowTerminal { get; set; }
 
         public ScriptData(string name = "")
         {
@@ -30,7 +28,6 @@ namespace TheMacroApp
             Extensions = Array.Empty<string>();
             ExecutablePath = string.Empty;
             Format = DEFAULT_FORMAT;
-            ShowTerminal = false;
         }
 
         public void SetExtensions(string extensions)

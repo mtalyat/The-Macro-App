@@ -5,7 +5,7 @@
 * Changed the macro list so it will display all the macro information: the key combination, followed by the command that will be ran in the terminal.
 * Added the ability to set custom key combinations for each macro, instead of being limited to Ctrl + Alt + Number Key.
 * The application will let you know if a key combination is VALID or INVALID.Check the README for more info.
-* Changed the main window to allow for an infinite number of macros to be set.
+* Changed the main window to have a more dynamic list, which expands and allows for many macros.
 * Fixed err with the executable path for Text files in the README.
 * Updated README with the new user interfaces.
 * Updated README with more examples.

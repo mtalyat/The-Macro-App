@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1
+## 1.1.0
 * Added application icon.
 * Added a Configure window, which will allow the user to customize script types that can be ran:
   * Name of type.

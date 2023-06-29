@@ -67,6 +67,7 @@ The following contains some examples for script configurations and macros.
 * [x] Create a way to dynamically add script types for users, and make it so the default application comes with some basics (Batch, Python, etc.)
 * [x] Create better settings.
 * [x] Create better system for command line arguments.
-* [ ] Create a way to allow any key combination to be a shortcut, instead of just limiting to Ctrl + Alt + number key.
+* [x] Create a way to allow any key combination to be a shortcut, instead of just limiting to Ctrl + Alt + number key.
 * [ ] Create a way to see the input and output of a script in the terminal, but only if necessary. Macro settings: always show terminal, never show, show if needed. Default to only show if needed.
 * [ ] Limit the files that can be selected to only ones that have been configured, by default. Still have All Files as an option.
+* [ ] Show what hot keys are valid or invalid on the main window.

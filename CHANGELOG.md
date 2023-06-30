@@ -1,12 +1,13 @@
 # Changelog
 
-## 1.2.1
+## 1.3.0
 * Updated the main window to have slight color variations if a macro is VALID, INVALID or EMPTY.
   * VALID is green
   * INVALID is red
   * EMPTY is gray
   * DEFAULT is white
 * Updated README to reflect these changes.
+* Updated file selection dialog so it will filter by configured script types.
 
 ## 1.2.0
 * Changed the macro configuration window to follow an OK APPLY CANCEL pattern.

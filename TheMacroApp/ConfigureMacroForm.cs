@@ -72,13 +72,84 @@ namespace TheMacroApp
             Close();
         }
 
+        private string GenerateOpenFileDialogFilter()
+        {
+            // dynamically create a filter
+            // create one for all configured script types
+            // create one for each configured script type
+            // create one for all files
+
+            // if no scripts, just return all types
+            if(!Manager.Data.Scripts.Any())
+            {
+                return "All Files (*.*)|*.*";
+            }
+
+            StringBuilder output = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
+            string temp;
+
+            /*
+             * Should follow the format:
+             * 
+             * "Script Name (*.extension;*.extension2)|*.extension;*.extension2"
+             */
+
+            output.Append("All Configured Types (");
+
+            // all configured
+            foreach (ScriptData scriptData in Manager.Data.Scripts)
+            {
+                foreach (string extension in scriptData.Extensions)
+                {
+                    sb.Append('*');
+                    sb.Append(extension);
+                    sb.Append(';');
+                }
+            }
+            sb.Remove(sb.Length - 1, 1); // remove last ;
+
+            temp = sb.ToString();
+            sb.Clear();
+
+            output.Append(temp);
+            output.Append(")|");
+            output.Append(temp);
+            output.Append('|');
+
+            // individual
+            foreach (ScriptData scriptData in Manager.Data.GetScripts())
+            {
+                output.Append(scriptData.Name);
+                output.Append(" (");
+                foreach (string extension in scriptData.Extensions)
+                {
+                    sb.Append('*');
+                    sb.Append(extension);
+                    sb.Append(';');
+                }
+                sb.Remove(sb.Length - 1, 1); // remove last ;
+                temp = sb.ToString();
+                sb.Clear();
+                output.Append(temp);
+                output.Append(")|");
+                output.Append(temp);
+                output.Append('|');
+            }
+
+            // all
+            output.Append("All Files (*.*)|*.*");
+
+            return output.ToString();
+        }
+
         private void OpenFileDialogPathButton_Click(object sender, EventArgs e)
         {
             // open file dialog for that macro
             OpenFileDialog ofd = new OpenFileDialog()
             {
                 Title = $"Select a script to run for the macro.",
-                Filter = "All Files (*.*) |*.*",
+                Filter = GenerateOpenFileDialogFilter(),
                 InitialDirectory = AppData.FOLDER_PATH,
                 RestoreDirectory = true,
                 CheckFileExists = true
@@ -119,7 +190,7 @@ namespace TheMacroApp
 
             // if equal to saved key, then it is valid
             // (Windows would say it is not valid, but that is becuase the old key is using that value)
-            if(_macroData.Key.IsRegistered && _macroData.Key == temp)
+            if (_macroData.Key.IsRegistered && _macroData.Key == temp)
             {
                 SetKeyValidity(true);
             }
@@ -127,17 +198,18 @@ namespace TheMacroApp
             {
                 // show if valid or not
                 SetKeyValidity(temp.CanRegister());
-            }            
+            }
         }
 
         private void SetKeyValidity(bool valid)
         {
-            if(valid)
+            if (valid)
             {
                 HotKeyErrorLabel.Text = "Hot Key is VALID.";
                 HotKeyErrorLabel.ForeColor = Color.White;
                 HotKeyErrorLabel.BackColor = Color.Green;
-            } else
+            }
+            else
             {
                 HotKeyErrorLabel.Text = "Hot Key is INVALID.";
                 HotKeyErrorLabel.ForeColor = Color.White;

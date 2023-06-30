@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.1
+* Updated the main window to have slight color variations if a macro is VALID, INVALID or EMPTY.
+  * VALID is green
+  * INVALID is red
+  * EMPTY is gray
+  * DEFAULT is white
+* Updated README to reflect these changes.
+
 ## 1.2.0
 * Changed the macro configuration window to follow an OK APPLY CANCEL pattern.
 * Changed the macro list so it will display all the macro information: the key combination, followed by the command that will be ran in the terminal.

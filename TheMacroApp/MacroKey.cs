@@ -9,6 +9,11 @@ namespace TheMacroApp
 {
     public class MacroKey
     {
+        [JsonIgnore]
+        public const string INVALID_TEXT = "INVALID";
+        [JsonIgnore]
+        public const string VALID_TEXT = "VALID";
+
         [JsonInclude]
         public Keys Key;
         [JsonInclude]
@@ -153,6 +158,12 @@ namespace TheMacroApp
 
         public override string ToString()
         {
+            // no modifiers: no key combo
+            if(Modifiers == ModKeys.None)
+            {
+                return INVALID_TEXT;
+            }
+
             // print in order of human readability:
             // windows control alt shift key
             StringBuilder sb = new StringBuilder();

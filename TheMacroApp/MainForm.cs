@@ -14,6 +14,11 @@ namespace TheMacroApp
 {
     public partial class MainForm : Form
     {
+        private static readonly Color COLOR_DEFAULT = Color.FromArgb(255, 255, 255, 255);
+        private static readonly Color COLOR_GOOD = Color.FromArgb(255, 240, 255, 240);
+        private static readonly Color COLOR_BAD = Color.FromArgb(255, 255, 240, 240);
+        private static readonly Color COLOR_EMPTY = Color.FromArgb(255, 220, 220, 220);
+
         private Button[] _macroButtons;
 
         private ConfigureScriptsForm? _configureForm;
@@ -57,12 +62,16 @@ namespace TheMacroApp
             Manager.Save();
 
             // set button display
-            SetMacroButtonText(index, data.ToString());
+            UpdateMacroButton(index, data);
         }
 
-        private void SetMacroButtonText(int index, string text)
+        private void UpdateMacroButton(int index, MacroData data)
         {
-            _macroButtons[index].Text = text;
+            // set text
+            _macroButtons[index].Text = data.ToString();
+
+            // set button color
+            _macroButtons[index].BackColor = GetMacroButtonColor(data);
         }
 
         private void OpenFolderButton_Click(object sender, EventArgs e)
@@ -110,7 +119,7 @@ namespace TheMacroApp
             UpdateHotKeys();
         }
 
-        private void MacroButton_MouseClick(object sender, MouseEventArgs e)
+        private void MacroButton_MouseClick(object? sender, MouseEventArgs e)
         {
             // get index of macro by using index of button
             int index = Array.IndexOf(_macroButtons, (Button)sender);
@@ -124,7 +133,7 @@ namespace TheMacroApp
             }
         }
 
-        private void NewMacroButton_MouseClick(object sender, MouseEventArgs e)
+        private void NewMacroButton_MouseClick(object? sender, MouseEventArgs e)
         {
             // create new macro and add it
             Manager.Data.AddMacro(new MacroData());
@@ -159,16 +168,38 @@ namespace TheMacroApp
             }
         }
 
-        private Button CreateHotKeyButton(string text, MouseEventHandler handler)
+        private Button CreateHotKeyButton(string text, Color color, MouseEventHandler handler)
         {
             Button button = new Button()
             {
                 Text = text,
                 Size = new Size(HotKeysFlowLayoutPanel.Width - 30, 29),
                 TextAlign = ContentAlignment.MiddleLeft,
+                BackColor = color
             };
             button.MouseUp += handler;
             return button;
+        }
+
+        private Color GetMacroButtonColor(MacroData? macro)
+        {
+            if(macro == null)
+            {
+                return COLOR_DEFAULT;
+            }
+
+            if (macro.IsEmpty)
+            {
+                return COLOR_EMPTY;
+            }
+            else if (macro.IsRegistered)
+            {
+                return COLOR_GOOD;
+            }
+            else
+            {
+                return COLOR_BAD;
+            }
         }
 
         private void UpdateHotKeys()
@@ -188,13 +219,16 @@ namespace TheMacroApp
             // create new buttons for each macro data
             for (int i = 0; i < macros.Length; i++)
             {
-                temp = CreateHotKeyButton(macros[i].ToString(), MacroButton_MouseClick);
+                MacroData macro = macros[i];
+                Color color = GetMacroButtonColor(macro);
+
+                temp = CreateHotKeyButton(macro.ToString(), color, MacroButton_MouseClick);
                 _macroButtons[i] = temp;
                 HotKeysFlowLayoutPanel.Controls.Add(temp);
             }
 
             // add one last button for adding new hot keys
-            temp = CreateHotKeyButton("New...", NewMacroButton_MouseClick);
+            temp = CreateHotKeyButton("New...", COLOR_DEFAULT, NewMacroButton_MouseClick);
             HotKeysFlowLayoutPanel.Controls.Add(temp);
 
             // reassign scroll

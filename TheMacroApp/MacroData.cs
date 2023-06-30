@@ -14,7 +14,7 @@ namespace TheMacroApp
     public class MacroData
     {
         [JsonIgnore]
-        public const string INVALID_TEXT = "None";
+        public const string EMPTY_TEXT = "None";
 
         [JsonInclude]
         public string Path;
@@ -25,7 +25,9 @@ namespace TheMacroApp
         [JsonInclude]
         public MacroKey Key;
 
-        public bool IsValid => Key.IsRegistered;
+        public bool IsEmpty => string.IsNullOrWhiteSpace(Path) && string.IsNullOrWhiteSpace(Args);
+
+        public bool IsRegistered => Key.IsRegistered;
 
         public MacroData()
         {
@@ -51,9 +53,9 @@ namespace TheMacroApp
         public override string ToString()
         {
             // if key is not registered, so invalid
-            if(!IsValid)
+            if(IsEmpty)
             {
-                return INVALID_TEXT;
+                return EMPTY_TEXT;
             }
 
             // find script data for this

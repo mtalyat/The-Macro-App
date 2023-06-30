@@ -85,6 +85,8 @@ namespace TheMacroApp
                  * - FileName = MacroData.Path
                  * - Arguments = MacroData.Args
                  * 
+                 * 
+                 * 
                  * If executable provided:
                  * - FileName = ScriptData.ExecutablePath
                  * - Arguments = MacroData.ToCommand()

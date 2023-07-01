@@ -71,3 +71,6 @@ The following contains some examples for script configurations and macros.
 * [ ] Create a way to see the input and output of a script in the terminal, but only if necessary. Macro settings: always show terminal, never show, show if needed. Default to only show if needed.
 * [x] Limit the files that can be selected to only ones that have been configured, by default. Still have All Files as an option.
 * [x] Show what hot keys are valid or invalid on the main window.
+* [ ] Create default script types.
+* [ ] Create an installer.
+* [ ] Create some basic macros for examples.

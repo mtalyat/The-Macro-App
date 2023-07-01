@@ -98,7 +98,7 @@ namespace TheMacroApp
             output.Append('|');
 
             // individual
-            foreach (ScriptData scriptData in Manager.Data.GetScripts())
+            foreach (ScriptData scriptData in Manager.Data.Scripts)
             {
                 output.Append(scriptData.Name);
                 output.Append(" (");

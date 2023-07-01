@@ -94,7 +94,7 @@ namespace TheMacroApp
             else
             {
                 // invalid file type
-                ShowWarning($"Extension \"{extension}\" not recognized. Make sure you add it to the configuration settings.", "Unknown extension.");
+                ShowError($"Extension \"{extension}\" not recognized. Make sure you add it to the configuration settings.", "Unknown extension.", true);
             }
         }
 

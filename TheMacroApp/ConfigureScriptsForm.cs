@@ -39,7 +39,7 @@ namespace TheMacroApp
 
             // load scripts
             ScriptsListBox.DataSource = null;
-            ScriptsListBox.DataSource = Manager.Data.GetScripts();
+            ScriptsListBox.DataSource = Manager.Data.Scripts;
 
             // keep index if possible
             ScriptsListBox.SelectedIndex = Math.Min(index, ScriptsListBox.Items.Count - 1);

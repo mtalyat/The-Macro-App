@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.4.0
+
 ## 1.3.0
 * Updated the main window to have slight color variations if a macro is VALID, INVALID or EMPTY.
   * VALID is green

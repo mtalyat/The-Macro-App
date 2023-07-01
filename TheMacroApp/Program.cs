@@ -15,21 +15,28 @@ namespace TheMacroApp
             ApplicationConfiguration.Initialize();
 
             // https://stackoverflow.com/questions/995195/how-can-i-make-a-net-windows-forms-application-that-only-runs-in-the-system-tra
+            // create a background process that will run in the tray, and can be accessed via the tray
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            TheMacroApplicationContext ctx = new TheMacroApplicationContext();
+            MacroApplicationContext ctx = new MacroApplicationContext();
+            // run the application
             Application.Run(ctx);
+            // application no longer running, dispose used resources
             ctx.Dispose();
         }
     }
 
     // https://stackoverflow.com/questions/995195/how-can-i-make-a-net-windows-forms-application-that-only-runs-in-the-system-tra
-    internal class TheMacroApplicationContext : ApplicationContext
+    /// <summary>
+    /// Holds the context for the macro application. Handles input and actions relating to the interfaces of the app, 
+    /// while the app is minimized to the system tray.
+    /// </summary>
+    internal class MacroApplicationContext : ApplicationContext
     {
         public const string APP_NAME = "The Super Macro App";
         public const string APP_SYSTEM_NAME = "SuperMacroApp"; // name that is safe to use in file system
 
-        public static TheMacroApplicationContext? ActiveContext { get; private set; }
+        public static MacroApplicationContext? ActiveContext { get; private set; }
 
         private NotifyIcon _trayIcon;
         private KeyboardHook _keyboardHook;
@@ -37,7 +44,7 @@ namespace TheMacroApp
         private MainForm? _form;
         public MainForm? Form => _form;
 
-        public TheMacroApplicationContext()
+        public MacroApplicationContext()
         {
             ActiveContext = this;
 
@@ -76,7 +83,7 @@ namespace TheMacroApp
             }
         }
 
-        ~TheMacroApplicationContext()
+        ~MacroApplicationContext()
         {
             if(ActiveContext == this)
             {

@@ -6,8 +6,19 @@ using System.Threading.Tasks;
 
 namespace TheMacroApp
 {
+    /// <summary>
+    /// Adds useful extensions to various classes.
+    /// </summary>
     internal static class Extensions
     {
+        /// <summary>
+        /// Creates a sub-array from this array.
+        /// </summary>
+        /// <typeparam name="T">The type of array to create a sub array from.</typeparam>
+        /// <param name="array">The array to create the sub array from.</param>
+        /// <param name="offset">The starting index in the array to create the sub array.</param>
+        /// <param name="length">The number of elements to include in the sub array.</param>
+        /// <returns>The sub array using the given offset and length, from this array.</returns>
         public static T[] SubArray<T>(this T[] array, int offset, int length)
         {
             T[] result = new T[length];

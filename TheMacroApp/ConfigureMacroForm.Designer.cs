@@ -191,7 +191,7 @@
             this.WindowsCheckBox.TabIndex = 6;
             this.WindowsCheckBox.Text = "Windows";
             this.WindowsCheckBox.UseVisualStyleBackColor = true;
-            this.WindowsCheckBox.CheckedChanged += new System.EventHandler(this.WindowsCheckBox_CheckedChanged);
+            this.WindowsCheckBox.CheckedChanged += new System.EventHandler(this.OnKeyChange);
             // 
             // ShiftCheckBox
             // 
@@ -202,7 +202,7 @@
             this.ShiftCheckBox.TabIndex = 5;
             this.ShiftCheckBox.Text = "Shift";
             this.ShiftCheckBox.UseVisualStyleBackColor = true;
-            this.ShiftCheckBox.CheckedChanged += new System.EventHandler(this.ShiftCheckBox_CheckedChanged);
+            this.ShiftCheckBox.CheckedChanged += new System.EventHandler(this.OnKeyChange);
             // 
             // CtrlCheckBox
             // 
@@ -213,7 +213,7 @@
             this.CtrlCheckBox.TabIndex = 4;
             this.CtrlCheckBox.Text = "Ctrl";
             this.CtrlCheckBox.UseVisualStyleBackColor = true;
-            this.CtrlCheckBox.CheckedChanged += new System.EventHandler(this.CtrlCheckBox_CheckedChanged);
+            this.CtrlCheckBox.CheckedChanged += new System.EventHandler(this.OnKeyChange);
             // 
             // AltCheckBox
             // 
@@ -224,7 +224,7 @@
             this.AltCheckBox.TabIndex = 3;
             this.AltCheckBox.Text = "Alt";
             this.AltCheckBox.UseVisualStyleBackColor = true;
-            this.AltCheckBox.CheckedChanged += new System.EventHandler(this.AltCheckBox_CheckedChanged);
+            this.AltCheckBox.CheckedChanged += new System.EventHandler(this.OnKeyChange);
             // 
             // label5
             // 
@@ -253,7 +253,7 @@
             this.KeyComboBox.Name = "KeyComboBox";
             this.KeyComboBox.Size = new System.Drawing.Size(660, 28);
             this.KeyComboBox.TabIndex = 0;
-            this.KeyComboBox.SelectedIndexChanged += new System.EventHandler(this.KeyComboBox_SelectedIndexChanged);
+            this.KeyComboBox.SelectedIndexChanged += new System.EventHandler(this.OnKeyChange);
             // 
             // ApplyButton
             // 

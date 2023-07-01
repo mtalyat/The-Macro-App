@@ -12,8 +12,14 @@ using static System.Windows.Forms.Design.AxImporter;
 
 namespace TheMacroApp
 {
+    /// <summary>
+    /// The window that allows users to configure and customize the macros.
+    /// </summary>
     public partial class ConfigureMacroForm : Form
     {
+        /// <summary>
+        /// The macro data to configure.
+        /// </summary>
         private readonly MacroData _macroData;
 
         public ConfigureMacroForm(MacroData macro)
@@ -23,30 +29,11 @@ namespace TheMacroApp
             InitializeComponent();
         }
 
-        private void ConfigureMacroForm_Load(object sender, EventArgs e)
-        {
-            TerminalShowOptions[] options = Enum.GetValues<TerminalShowOptions>();
-            Keys[] keys = Enum.GetValues<Keys>();
+        #region View
 
-            // set data
-            TerminalComboBox.DataSource = options;
-            KeyComboBox.DataSource = keys;
-
-            // load from macro
-            PathTextBox.Text = _macroData.Path;
-            ArgumentsTextBox.Text = _macroData.Args;
-            TerminalComboBox.SelectedIndex = Array.IndexOf(options, _macroData.TerminalOption);
-
-            KeyComboBox.SelectedIndex = Array.IndexOf(keys, _macroData.Key.Key);
-            AltCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Alt);
-            CtrlCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Ctrl);
-            ShiftCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Shift);
-            WindowsCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Win);
-
-            // update key view
-            OnKeyChange();
-        }
-
+        /// <summary>
+        /// Takes the values from the input boxes and applies them to the stored macro object.
+        /// </summary>
         private void ApplyValuesToMacro()
         {
             // set values to macro
@@ -61,17 +48,10 @@ namespace TheMacroApp
             _macroData.Key.UpdateRegistration();
         }
 
-        private void DoneButton_Click(object sender, EventArgs e)
-        {
-            ApplyValuesToMacro();
-
-            // set result
-            DialogResult = DialogResult.OK;
-
-            // close
-            Close();
-        }
-
+        /// <summary>
+        /// Creates the filter for the open file dialog, when selecting a macro file to run.
+        /// </summary>
+        /// <returns>The filter for the OpenFileDialog.</returns>
         private string GenerateOpenFileDialogFilter()
         {
             // dynamically create a filter
@@ -80,7 +60,7 @@ namespace TheMacroApp
             // create one for all files
 
             // if no scripts, just return all types
-            if(!Manager.Data.Scripts.Any())
+            if (!Manager.Data.Scripts.Any())
             {
                 return "All Files (*.*)|*.*";
             }
@@ -143,6 +123,74 @@ namespace TheMacroApp
             return output.ToString();
         }
 
+        /// <summary>
+        /// Sets the attributes of the display letting the user know if the macro key is valid or invalid.
+        /// </summary>
+        /// <param name="valid"></param>
+        private void SetKeyValidity(bool valid)
+        {
+            if (valid)
+            {
+                HotKeyErrorLabel.Text = "Hot Key is VALID.";
+                HotKeyErrorLabel.ForeColor = Color.White;
+                HotKeyErrorLabel.BackColor = Color.Green;
+            }
+            else
+            {
+                HotKeyErrorLabel.Text = "Hot Key is INVALID.";
+                HotKeyErrorLabel.ForeColor = Color.White;
+                HotKeyErrorLabel.BackColor = Color.Red;
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Loads the form data.
+        /// </summary>
+        private void ConfigureMacroForm_Load(object sender, EventArgs e)
+        {
+            TerminalShowOptions[] options = Enum.GetValues<TerminalShowOptions>();
+            Keys[] keys = Enum.GetValues<Keys>();
+
+            // set data
+            TerminalComboBox.DataSource = options;
+            KeyComboBox.DataSource = keys;
+
+            // load from macro
+            PathTextBox.Text = _macroData.Path;
+            ArgumentsTextBox.Text = _macroData.Args;
+            TerminalComboBox.SelectedIndex = Array.IndexOf(options, _macroData.TerminalOption);
+
+            KeyComboBox.SelectedIndex = Array.IndexOf(keys, _macroData.Key.Key);
+            AltCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Alt);
+            CtrlCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Ctrl);
+            ShiftCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Shift);
+            WindowsCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Win);
+
+            // update key view
+            OnKeyChange(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// Saves all values to the macro data, then closes the form.
+        /// </summary>
+        private void DoneButton_Click(object sender, EventArgs e)
+        {
+            ApplyValuesToMacro();
+
+            // set result
+            DialogResult = DialogResult.OK;
+
+            // close
+            Close();
+        }
+
+        /// <summary>
+        /// Allows the user to select a path for the macro file to run.
+        /// </summary>
         private void OpenFileDialogPathButton_Click(object sender, EventArgs e)
         {
             // open file dialog for that macro
@@ -162,6 +210,9 @@ namespace TheMacroApp
             }
         }
 
+        /// <summary>
+        /// Resets the form inputs to the default values.
+        /// </summary>
         private void ResetMacroButton_Click(object sender, EventArgs e)
         {
             // clear data from boxes
@@ -176,13 +227,19 @@ namespace TheMacroApp
             SetKeyValidity(false);
         }
 
+        /// <summary>
+        /// Sets the form inputs back to the currently saved values in the macro data.
+        /// </summary>
         private void DiscardButton_Click(object sender, EventArgs e)
         {
             // do not set
             Close();
         }
 
-        private void OnKeyChange()
+        /// <summary>
+        /// Called when a value of the macro key has been changed (modifier or key).
+        /// </summary>
+        private void OnKeyChange(object sender, EventArgs e)
         {
             MacroKey temp = new MacroKey();
             temp.Key = KeyComboBox.SelectedItem as Keys? ?? Keys.None;
@@ -201,50 +258,14 @@ namespace TheMacroApp
             }
         }
 
-        private void SetKeyValidity(bool valid)
-        {
-            if (valid)
-            {
-                HotKeyErrorLabel.Text = "Hot Key is VALID.";
-                HotKeyErrorLabel.ForeColor = Color.White;
-                HotKeyErrorLabel.BackColor = Color.Green;
-            }
-            else
-            {
-                HotKeyErrorLabel.Text = "Hot Key is INVALID.";
-                HotKeyErrorLabel.ForeColor = Color.White;
-                HotKeyErrorLabel.BackColor = Color.Red;
-            }
-        }
-
-        private void KeyComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OnKeyChange();
-        }
-
-        private void AltCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            OnKeyChange();
-        }
-
-        private void CtrlCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            OnKeyChange();
-        }
-
-        private void ShiftCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            OnKeyChange();
-        }
-
-        private void WindowsCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            OnKeyChange();
-        }
-
+        /// <summary>
+        /// Apply changes to the macro.
+        /// </summary>
         private void ApplyButton_Click(object sender, EventArgs e)
         {
             ApplyValuesToMacro();
         }
+
+        #endregion
     }
 }

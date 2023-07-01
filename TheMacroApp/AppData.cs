@@ -8,17 +8,35 @@ using System.Threading.Tasks;
 
 namespace TheMacroApp
 {
+    /// <summary>
+    /// Holds data for the entire application.
+    /// </summary>
     internal class AppData
     {
-        public static readonly string FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), TheMacroApplicationContext.APP_SYSTEM_NAME);
+        /// <summary>
+        /// The path to the directory for the application data (settings, etc.)
+        /// </summary>
+        public static readonly string FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), MacroApplicationContext.APP_SYSTEM_NAME);
 
+        /// <summary>
+        /// The list of loaded macro datas.
+        /// </summary>
         [JsonInclude]
         public List<MacroData> Macros { get; private set; } = new List<MacroData>();
+
+        /// <summary>
+        /// The list of loaded script type datas.
+        /// </summary>
         [JsonInclude]
         public List<ScriptData> Scripts { get; private set; } = new List<ScriptData>();
 
         #region Managing
 
+        /// <summary>
+        /// Sets the macro at the given index.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="data"></param>
         public void SetMacro(int index, MacroData data)
         {
             // if invalid index, do nothing
@@ -30,16 +48,29 @@ namespace TheMacroApp
             Macros[index] = data;
         }
 
+        /// <summary>
+        /// Adds a new macro to the list.
+        /// </summary>
+        /// <param name="data">The new macro to add.</param>
         public void AddMacro(MacroData data)
         {
             Macros.Add(data);
         }
 
+        /// <summary>
+        /// Deletes the macro at the given index.
+        /// </summary>
+        /// <param name="index">The index to remove the macro at.</param>
         public void DeleteMacro(int index)
         {
             Macros.RemoveAt(index);
         }
 
+        /// <summary>
+        /// Gets the macro at the given index.
+        /// </summary>
+        /// <param name="index">The index of the macro to get.</param>
+        /// <returns>The macro at the given index, or null if the index is out of range.</returns>
         public MacroData? GetMacro(int index)
         {
             // return nothing if null
@@ -52,6 +83,11 @@ namespace TheMacroApp
             return Macros[index];
         }
 
+        /// <summary>
+        /// Finds the macro with the given key.
+        /// </summary>
+        /// <param name="key">The key that belongs to the macro data.</param>
+        /// <returns>The macro data that has the same key as the given key, or null if not found.</returns>
         public MacroData? FindMacro(MacroKey key)
         {
             foreach(MacroData macro in Macros)
@@ -65,6 +101,11 @@ namespace TheMacroApp
             return null;
         }
 
+        /// <summary>
+        /// Updates the given script data.
+        /// </summary>
+        /// <param name="data">The script data to update.</param>
+        /// <param name="addIfNotFound">If true, and the script data was not found, add it.</param>
         public void SetScript(ScriptData data, bool addIfNotFound = true)
         {
             // find script, if exists, override
@@ -82,6 +123,10 @@ namespace TheMacroApp
             }
         }
 
+        /// <summary>
+        /// Deletes the script data with the given name.
+        /// </summary>
+        /// <param name="name">The name of the script data to delete.</param>
         public void DeleteScript(string name)
         {
             int index = Scripts.FindIndex(s => s.Name == name);
@@ -91,6 +136,12 @@ namespace TheMacroApp
             }
         }
 
+        /// <summary>
+        /// Renames a script data.
+        /// </summary>
+        /// <param name="oldName">The existing name of the script data.</param>
+        /// <param name="newName">The new name of the script data.</param>
+        /// <returns></returns>
         public bool RenameScript(string oldName, string newName)
         {
             int index = Scripts.FindIndex(s => s.Name == oldName);
@@ -106,12 +157,11 @@ namespace TheMacroApp
             return false;
         }
 
-        public ScriptData[] GetScripts()
-        {
-            // get all script names
-            return Scripts.ToArray();
-        }
-
+        /// <summary>
+        /// Finds the script data with the given extension type.
+        /// </summary>
+        /// <param name="extension">The extension type to use to search for the script data.</param>
+        /// <returns>The script data that contains the given extension, or null if not found.</returns>
         public ScriptData? FindScript(string extension)
         {
             foreach(ScriptData data in Scripts)
@@ -131,11 +181,20 @@ namespace TheMacroApp
 
         #region Saving and Loading
 
+        /// <summary>
+        /// Saves this AppData to a file at the given path.
+        /// </summary>
+        /// <param name="path">The location to save the AppData at.</param>
         public void Save(string path)
         {
             File.WriteAllText(path, JsonSerializer.Serialize(this));
         }
 
+        /// <summary>
+        /// Loads an instance of AppData from the file at the given path.
+        /// </summary>
+        /// <param name="path">The location to load the AppData from.</param>
+        /// <returns>The AppData from that location, or null if the file did not exist or was in the incorrect format.</returns>
         public static AppData? Load(string path)
         {
             if(!File.Exists(path))
@@ -158,7 +217,12 @@ namespace TheMacroApp
         #endregion
 
         #region Utility
-
+        
+        /// <summary>
+        /// Checks if the given index is out of range of the macros.
+        /// </summary>
+        /// <param name="index">The index to check.</param>
+        /// <returns>True if the index is out of range, otherwise false.</returns>
         private bool IsInvalidIndex(int index)
         {
             return index < 0 || index >= Macros.Count;

@@ -8,19 +8,34 @@ using System.Threading.Tasks;
 
 namespace TheMacroApp
 {
+    /// <summary>
+    /// Manages the application data.
+    /// </summary>
     internal static class Manager
     {
+        /// <summary>
+        /// The location of the app data.
+        /// </summary>
         private static readonly string SAVE_FILE = Path.Join(Application.LocalUserAppDataPath, @"appdata.json");
 
+        /// <summary>
+        /// The data of the application.
+        /// </summary>
         public static AppData Data { get; private set; } = new AppData();
 
         #region Saving and Loading
 
+        /// <summary>
+        /// Saves the app data.
+        /// </summary>
         public static void Save()
         {
             Data.Save(SAVE_FILE);
         }
 
+        /// <summary>
+        /// Loads the app data.
+        /// </summary>
         public static void Load()
         {
             // load data from disc
@@ -34,6 +49,10 @@ namespace TheMacroApp
 
         #region Running
 
+        /// <summary>
+        /// Runs the macro with the given key.
+        /// </summary>
+        /// <param name="key">The key of the macro to run.</param>
         public static void RunMacro(MacroKey key)
         {
             // use key to find macro data
@@ -49,6 +68,10 @@ namespace TheMacroApp
             RunMacro(macroData);
         }
 
+        /// <summary>
+        /// Runs the macro using the given macro data.
+        /// </summary>
+        /// <param name="macroData">The data of the macro to run.</param>
         public static void RunMacro(MacroData macroData)
         {
             // if no data saved, do nothing
@@ -75,6 +98,11 @@ namespace TheMacroApp
             }
         }
 
+        /// <summary>
+        /// Runs a command from a macro.
+        /// </summary>
+        /// <param name="macroData">The macro data of the macro to run.</param>
+        /// <param name="scriptData">The script data associated with the given macro.</param>
         private static void RunCommand(MacroData macroData, ScriptData scriptData)
         {
             using (Process process = new Process())
@@ -134,14 +162,15 @@ namespace TheMacroApp
 
         #region Utility
 
-        private static void ShowWarning(string text, string caption)
+        /// <summary>
+        /// Shows an error message box.
+        /// </summary>
+        /// <param name="text">The text to display.</param>
+        /// <param name="caption">The title of the message box.</param>
+        /// <param name="warning">Display a warning icon if true, otherwise displays an error icon.</param>
+        private static void ShowError(string text, string caption, bool warning = false)
         {
-            MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        private static void ShowError(string text, string caption)
-        {
-            MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(text, caption, MessageBoxButtons.OK, warning ? MessageBoxIcon.Warning : MessageBoxIcon.Error);
         }
 
         #endregion

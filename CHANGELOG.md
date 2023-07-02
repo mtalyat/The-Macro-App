@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.1
+* Updated the README to better reflect how the application is used.
+* Removed the Hot Keys list from the README.
+* Changed invalid keys so they will no longer display "INVALID" when they are invalid. Instead, they will display the current key selection for that key. Invalid or valid hot keys will be distinguishable by the red or green color.
+* Added a setting to change VALID and INVALID key colors, so they do not have to be green and red. They will default to green and red.
+* If the macro to open the application is pressed while the window is minimized, it will return the window state to normal.
+
 ## 1.4.0
 * Renamed to just "The Macro App".
 * Updated the icon so it is sage green colored, instead of black, to make it pop more.

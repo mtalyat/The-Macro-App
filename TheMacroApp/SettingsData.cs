@@ -21,5 +21,17 @@ namespace TheMacroApp
         /// </summary>
         [JsonInclude]
         public MacroKey ApplicationKey { get; set; } = new MacroKey(Keys.M, ModKeys.Ctrl | ModKeys.Alt); // default is Ctrl + Alt + M
+
+        /// <summary>
+        /// The color to display for valid keys.
+        /// </summary>
+        [JsonInclude]
+        public BasicColor ValidColor { get; set; } = new BasicColor(255, 240, 255, 240);
+
+        /// <summary>
+        /// The color to display for invalid keys.
+        /// </summary>
+        [JsonInclude]
+        public BasicColor InvalidColor { get; set; } = new BasicColor(255, 255, 240, 240);
     }
 }

@@ -36,6 +36,9 @@ namespace TheMacroApp
             _settingsData.ApplicationKey.SetModifiers(AltCheckBox.Checked, CtrlCheckBox.Checked, ShiftCheckBox.Checked, WindowsCheckBox.Checked);
             _settingsData.ApplicationKey.UpdateRegistration();
 
+            _settingsData.ValidColor = ValidColorButton.BackColor;
+            _settingsData.InvalidColor = InvalidColorButton.BackColor;
+
             // remove from startup, if it exists
             string path = GetStartupFilePath();
             
@@ -71,6 +74,9 @@ namespace TheMacroApp
             ShiftCheckBox.Checked = _settingsData.ApplicationKey.Modifiers.HasFlag(ModKeys.Shift);
             WindowsCheckBox.Checked = _settingsData.ApplicationKey.Modifiers.HasFlag(ModKeys.Win);
 
+            UpdateColorButton(ValidColorButton, _settingsData.ValidColor);
+            UpdateColorButton(InvalidColorButton, _settingsData.InvalidColor);
+
             // if it is in the startup folder, it will start when the computer starts
             StartupCheckBox.Checked = File.Exists(GetStartupFilePath());
 
@@ -88,20 +94,24 @@ namespace TheMacroApp
         /// <param name="valid"></param>
         private void SetKeyValidity(bool valid)
         {
+            BasicColor color;
             if (valid)
             {
-                HotKeyErrorLabel.Text = "Hot Key is VALID.";
-                HotKeyErrorLabel.ForeColor = Color.White;
-                HotKeyErrorLabel.BackColor = Color.Green;
+                HotKeyErrorLabel.Text = $"Hot Key is {MacroKey.VALID_TEXT}.";
+                color = ValidColorButton.BackColor;
+                color = color.Vivid();
+                HotKeyErrorLabel.ForeColor = color.GetTextColor();
+                HotKeyErrorLabel.BackColor = color;
             }
             else
             {
-                HotKeyErrorLabel.Text = "Hot Key is INVALID.";
-                HotKeyErrorLabel.ForeColor = Color.White;
-                HotKeyErrorLabel.BackColor = Color.Red;
+                HotKeyErrorLabel.Text = $"Hot Key is {MacroKey.INVALID_TEXT}.";
+                color = InvalidColorButton.BackColor;
+                color = color.Vivid();
+                HotKeyErrorLabel.ForeColor = color.GetTextColor();
+                HotKeyErrorLabel.BackColor = color;
             }
         }
-
 
         /// <summary>
         /// Called when a value of the macro key has been changed (modifier or key).
@@ -123,6 +133,19 @@ namespace TheMacroApp
                 // show if valid or not
                 SetKeyValidity(temp.CanRegister());
             }
+        }
+
+        /// <summary>
+        /// Updates a color selection button with a new color.
+        /// </summary>
+        private void UpdateColorButton(Button button, BasicColor color)
+        {
+            // set colors
+            button.BackColor = color;
+            button.ForeColor = color.GetTextColor();
+
+            // set text as well
+            button.Text = color.ToString();
         }
 
         #endregion
@@ -189,8 +212,6 @@ namespace TheMacroApp
             LoadData();
         }
 
-        #endregion
-
         private void ScriptFolderOpenFileDialogButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog()
@@ -200,10 +221,36 @@ namespace TheMacroApp
                 InitialDirectory = _settingsData.ScriptFolderPath
             };
 
-            if(fbd.ShowDialog() == DialogResult.OK)
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
                 ScriptFolderTextBox.Text = fbd.SelectedPath;
             }
         }
+
+        private void ColorButton_Click(object sender, EventArgs e)
+        {
+            // open color dialog and select new color, set as bg color
+            Button button = (Button)sender;
+
+            ColorDialog cd = new ColorDialog()
+            {
+                Color = button.BackColor,
+                SolidColorOnly = true,
+                AnyColor = true,
+                FullOpen = true,
+                AllowFullOpen = true
+            };
+
+            if (cd.ShowDialog() == DialogResult.OK)
+            {
+                // update button
+                UpdateColorButton(button, cd.Color);
+
+                // update hotkey display
+                OnKeyChange(this, new EventArgs());
+            }
+        }
+
+        #endregion
     }
 }

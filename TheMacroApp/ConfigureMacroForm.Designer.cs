@@ -174,12 +174,12 @@
             // 
             this.HotKeyErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.HotKeyErrorLabel.BackColor = System.Drawing.Color.Lime;
+            this.HotKeyErrorLabel.BackColor = System.Drawing.Color.White;
             this.HotKeyErrorLabel.Location = new System.Drawing.Point(6, 84);
             this.HotKeyErrorLabel.Name = "HotKeyErrorLabel";
             this.HotKeyErrorLabel.Size = new System.Drawing.Size(757, 20);
             this.HotKeyErrorLabel.TabIndex = 7;
-            this.HotKeyErrorLabel.Text = "Hot Key is VALID.";
+            this.HotKeyErrorLabel.Text = "Hot Key is ___.";
             this.HotKeyErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // WindowsCheckBox

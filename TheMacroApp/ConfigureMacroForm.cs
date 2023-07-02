@@ -129,17 +129,20 @@ namespace TheMacroApp
         /// <param name="valid"></param>
         private void SetKeyValidity(bool valid)
         {
+            BasicColor color;
             if (valid)
             {
-                HotKeyErrorLabel.Text = "Hot Key is VALID.";
-                HotKeyErrorLabel.ForeColor = Color.White;
-                HotKeyErrorLabel.BackColor = Color.Green;
+                HotKeyErrorLabel.Text = $"Hot Key is {MacroKey.VALID_TEXT}.";
+                color = Manager.Data.Settings.ValidColor.Vivid();
+                HotKeyErrorLabel.ForeColor = color.GetTextColor();
+                HotKeyErrorLabel.BackColor = color;
             }
             else
             {
-                HotKeyErrorLabel.Text = "Hot Key is INVALID.";
-                HotKeyErrorLabel.ForeColor = Color.White;
-                HotKeyErrorLabel.BackColor = Color.Red;
+                HotKeyErrorLabel.Text = $"Hot Key is {MacroKey.INVALID_TEXT}.";
+                color = Manager.Data.Settings.InvalidColor.Vivid();
+                HotKeyErrorLabel.ForeColor = color.GetTextColor();
+                HotKeyErrorLabel.BackColor = color;
             }
         }
 

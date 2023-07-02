@@ -242,12 +242,6 @@ namespace TheMacroApp
 
         public override string ToString()
         {
-            // no modifiers: no key combo
-            if(Modifiers == ModKeys.None)
-            {
-                return INVALID_TEXT;
-            }
-
             // print in order of human readability:
             // windows control alt shift key
             StringBuilder sb = new StringBuilder();

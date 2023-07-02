@@ -146,6 +146,9 @@ namespace TheMacroApp
             {
                 // use existing form, show if not visible, or select if it is
                 _form.Show();
+            } else if (_form.WindowState == FormWindowState.Minimized)
+            {
+                _form.WindowState = FormWindowState.Normal;
             }
             _form.Activate();
         }

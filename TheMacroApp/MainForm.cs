@@ -22,14 +22,6 @@ namespace TheMacroApp
         /// </summary>
         private static readonly Color COLOR_DEFAULT = Color.FromArgb(255, 255, 255, 255);
         /// <summary>
-        /// The color to display when a macro is not empty and is registered.
-        /// </summary>
-        private static readonly Color COLOR_GOOD = Color.FromArgb(255, 240, 255, 240);
-        /// <summary>
-        /// The color to display when a macro is not empty and is not registered.
-        /// </summary>
-        private static readonly Color COLOR_BAD = Color.FromArgb(255, 255, 240, 240);
-        /// <summary>
         /// The color to display when a macro is empty.
         /// </summary>
         private static readonly Color COLOR_EMPTY = Color.FromArgb(255, 220, 220, 220);
@@ -134,11 +126,15 @@ namespace TheMacroApp
         /// <param name="data">The macro data to use to update the button display with.</param>
         private void UpdateMacroButton(int index, MacroData data)
         {
+            Button button = _macroButtons[index];
+
             // set text
-            _macroButtons[index].Text = data.ToString();
+            button.Text = data.ToString();
 
             // set button color
-            _macroButtons[index].BackColor = GetMacroButtonColor(data);
+            BasicColor color = GetMacroButtonColor(data);
+            button.BackColor = color;
+            button.ForeColor = color.GetTextColor();
         }
 
         /// <summary>
@@ -148,14 +144,15 @@ namespace TheMacroApp
         /// <param name="color">The background color of the button.</param>
         /// <param name="handler">The event to call when it is clicked.</param>
         /// <returns>The Button object generated.</returns>
-        private Button CreateMacroButton(string text, Color color, MouseEventHandler handler)
+        private Button CreateMacroButton(string text, BasicColor color, MouseEventHandler handler)
         {
             Button button = new Button()
             {
                 Text = text,
                 Size = new Size(HotKeysFlowLayoutPanel.Width - 30, 29),
                 TextAlign = ContentAlignment.MiddleLeft,
-                BackColor = color
+                BackColor = color,
+                ForeColor = color.GetTextColor()
             };
             button.MouseUp += handler;
             return button;
@@ -166,7 +163,7 @@ namespace TheMacroApp
         /// </summary>
         /// <param name="macro">The macro data to use to determine the color.</param>
         /// <returns>The color of the macro button.</returns>
-        private Color GetMacroButtonColor(MacroData? macro)
+        private BasicColor GetMacroButtonColor(MacroData? macro)
         {
             if (macro == null)
             {
@@ -179,11 +176,11 @@ namespace TheMacroApp
             }
             else if (macro.IsRegistered)
             {
-                return COLOR_GOOD;
+                return Manager.Data.Settings.ValidColor;
             }
             else
             {
-                return COLOR_BAD;
+                return Manager.Data.Settings.InvalidColor;
             }
         }
 
@@ -205,11 +202,11 @@ namespace TheMacroApp
             // add new button if it does not exist
             if (_newButton == null)
             {
-                _newButton= CreateMacroButton("New...", COLOR_DEFAULT, NewMacroButton_MouseClick);
+                _newButton = CreateMacroButton("New...", COLOR_DEFAULT, NewMacroButton_MouseClick);
                 HotKeysFlowLayoutPanel.Controls.Add(_newButton);
             }
 
-            if(macros.Length > _macroButtons.Count)
+            if (macros.Length > _macroButtons.Count)
             {
                 // add new buttons
 
@@ -217,13 +214,16 @@ namespace TheMacroApp
                 HotKeysFlowLayoutPanel.Controls.RemoveAt(HotKeysFlowLayoutPanel.Controls.Count - 1);
 
                 // add missing buttons
-                for(int i = _macroButtons.Count; i < macros.Length; i++)
+                for (int i = _macroButtons.Count; i < macros.Length; i++)
                 {
                     // create new button and add to list
                     macro = macros[i];
-                    temp = CreateMacroButton(macro.ToString(), GetMacroButtonColor(macro), MacroButton_MouseClick);
+                    temp = CreateMacroButton(string.Empty, COLOR_DEFAULT, MacroButton_MouseClick);
                     _macroButtons.Add(temp);
                     HotKeysFlowLayoutPanel.Controls.Add(temp);
+
+                    // make sure it has the correct visuals
+                    UpdateMacroButton(i, macro);
                 }
 
                 // add new button back
@@ -300,8 +300,13 @@ namespace TheMacroApp
         /// If left click, the macro will be edited.
         /// If right click, the macro will be deleted.
         /// </summary>
-        private void MacroButton_MouseClick(object sender, MouseEventArgs e)
+        private void MacroButton_MouseClick(object? sender, MouseEventArgs e)
         {
+            if(sender == null)
+            {
+                return;
+            }
+
             // get index of macro by using index of button
             int index = _macroButtons.IndexOf((Button)sender);
 
@@ -335,7 +340,7 @@ namespace TheMacroApp
         /// </summary>
         private void ConfigureButton_Click(object sender, EventArgs e)
         {
-            if(_configureForm == null)
+            if (_configureForm == null)
             {
                 _configureForm = new ConfigureScriptsForm();
                 _configureForm.Show();
@@ -358,7 +363,7 @@ namespace TheMacroApp
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             // close form on escape
-            if(e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape)
             {
                 Close();
             }
@@ -372,7 +377,7 @@ namespace TheMacroApp
         private void HotKeysFlowLayoutPanel_Resize(object sender, EventArgs e)
         {
             // resize all widths
-            foreach(Control control in HotKeysFlowLayoutPanel.Controls)
+            foreach (Control control in HotKeysFlowLayoutPanel.Controls)
             {
                 control.Size = new Size(HotKeysFlowLayoutPanel.Width - 30, control.Size.Height);
             }
@@ -383,13 +388,14 @@ namespace TheMacroApp
         /// </summary>
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            if(_settingsForm == null)
+            if (_settingsForm == null)
             {
                 _settingsForm = new SettingsForm(Manager.Data.Settings);
                 _settingsForm.Show();
                 _settingsForm.FormClosed += (object? sender, FormClosedEventArgs e) =>
                 {
                     _settingsForm = null;
+                    UpdateMacroList();
                 };
             }
 

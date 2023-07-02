@@ -17,13 +17,13 @@ If you wish to have the program always start when you turn on your computer, ple
 ## Usage
 
 ### Guide
-The Super Macro App lives in the System Tray. It can be accessed at any time by going to the system tray and clicking on it. It can also be forcibly closed by right clicking on it there, and hitting "Exit". It can also be accessed via the keyboard hot key: Ctrl + Alt + M.
+The Super Macro App lives in the System Tray. It can be accessed at any time by going to the system tray and clicking on it. It can also be forcibly closed by right clicking on it there, and hitting "Exit". It can also be accessed via the keyboard hot key: Ctrl + Alt + M. This hot key can be edited in the application settings.
 
 Each macro must be associated with a script of some sort. The user can customize how each script is ran by clicking the Configure button. After doing so, a new script type can be added by pressing add. After doing so, information can be filled out for the type of script. Here is an example of the window in use:
 
 ![An example of a script configured in the application.](Images/Configure.png)
 
-To set the script for a macro, left click on the button to the right of the corresponding number key number you would like to set. Doing so will open a window, allowing you to edit the macro data. You can set the path to the file the macro will perform on, and any command line arguments you would like to provide. You can also decide if you want the terminal to stay hidden, or to show for this specific macro. Lastly, select the hot key combination for this macro.
+Click on the "New..." button at the bottom of the hot key list. Doing so will open a window, allowing you to edit the new macro data. You can set the path to the file the macro will perform on, any command line arguments you would like to provide, as well as whether the terminal should be shown or not. Lastly, select the hot key combination for this macro.
 
 **REQUIREMENTS FOR MACRO HOT KEYS:**
 1. The hot key must have a key selected.
@@ -38,14 +38,13 @@ Here is an example of a macro being edited:
 
 After the macros have been set, press the Hot Key combination of keys of the macro you would like to run. After doing so, the script will run, according to your specifications. If Terminal is set to Show, then the terminal will pop up while the script is being ran. Otherwise, it will never be seen.
 
-### Hot Keys
-| Combination | Action |
-| --- | --- |
-| Ctrl + Alt + M | Shows the Super Macro App. |
+### Bugs, Suggestions, and more
+If you encounter any bugs or have any issues, please [create an issue on the Github issues page](https://github.com/mtalyat/The-Macro-App/issues). Suggestions for new features or changes are also welcome. This is a hobby project of mine, so I will address any issues when I can.
 
 ## Examples
 The following contains some examples for script configurations and macros.
 ### Script Configurations
+These will be loaded with the application by default, and can be edited or removed.
 | Name | Extensions | Executable | Command Format |
 | --- | --- | --- | --- |
 | Audio | `.mp3 .wav` | explorer.exe | {file} |
@@ -56,6 +55,7 @@ The following contains some examples for script configurations and macros.
 | Text | `.txt` | notepad.exe | {file} |
 | Video | `.mp4 .mov` | explorer.exe | {file} |
 ### Macros
+These will not be loaded with the application, but can be added in by the user if they would like. These are just to give some ideas on a few simple use cases for users.
 | Path | Arguments | Terminal | Hot Key | Description |
 | --- | --- | --- | --- | -- |
 | notepad.exe | | Hide | Windows + Shift + N | Opens a blank notepad. |
@@ -71,4 +71,4 @@ The following contains some examples for script configurations and macros.
 * [x] Limit the files that can be selected to only ones that have been configured, by default. Still have All Files as an option.
 * [x] Show what hot keys are valid or invalid on the main window.
 * [x] Create default script types.
-* [ ] Create some basic macros for examples.
+* [x] Create some basic macros for examples.

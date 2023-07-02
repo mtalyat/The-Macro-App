@@ -43,13 +43,17 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.KeyComboBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ValidColorButton = new System.Windows.Forms.Button();
+            this.InvalidColorButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.HotKeyGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // DoneButton
             // 
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DoneButton.Location = new System.Drawing.Point(551, 203);
+            this.DoneButton.Location = new System.Drawing.Point(551, 273);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(94, 29);
             this.DoneButton.TabIndex = 101;
@@ -60,7 +64,7 @@
             // QuitButton
             // 
             this.QuitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.QuitButton.Location = new System.Drawing.Point(12, 203);
+            this.QuitButton.Location = new System.Drawing.Point(12, 273);
             this.QuitButton.Name = "QuitButton";
             this.QuitButton.Size = new System.Drawing.Size(94, 29);
             this.QuitButton.TabIndex = 100;
@@ -93,13 +97,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ScriptFolderTextBox.Location = new System.Drawing.Point(186, 42);
             this.ScriptFolderTextBox.Name = "ScriptFolderTextBox";
-            this.ScriptFolderTextBox.Size = new System.Drawing.Size(429, 27);
+            this.ScriptFolderTextBox.Size = new System.Drawing.Size(426, 27);
             this.ScriptFolderTextBox.TabIndex = 103;
             // 
             // ScriptFolderOpenFileDialogButton
             // 
             this.ScriptFolderOpenFileDialogButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScriptFolderOpenFileDialogButton.Location = new System.Drawing.Point(621, 42);
+            this.ScriptFolderOpenFileDialogButton.Location = new System.Drawing.Point(618, 42);
             this.ScriptFolderOpenFileDialogButton.Name = "ScriptFolderOpenFileDialogButton";
             this.ScriptFolderOpenFileDialogButton.Size = new System.Drawing.Size(27, 27);
             this.ScriptFolderOpenFileDialogButton.TabIndex = 104;
@@ -119,7 +123,7 @@
             this.HotKeyGroupBox.Controls.Add(this.label5);
             this.HotKeyGroupBox.Controls.Add(this.label4);
             this.HotKeyGroupBox.Controls.Add(this.KeyComboBox);
-            this.HotKeyGroupBox.Location = new System.Drawing.Point(12, 75);
+            this.HotKeyGroupBox.Location = new System.Drawing.Point(12, 145);
             this.HotKeyGroupBox.Name = "HotKeyGroupBox";
             this.HotKeyGroupBox.Size = new System.Drawing.Size(633, 121);
             this.HotKeyGroupBox.TabIndex = 105;
@@ -211,13 +215,53 @@
             this.KeyComboBox.TabIndex = 0;
             this.KeyComboBox.SelectedValueChanged += new System.EventHandler(this.OnKeyChange);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(18, 79);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(116, 20);
+            this.label2.TabIndex = 106;
+            this.label2.Text = "VALID key color:";
+            // 
+            // ValidColorButton
+            // 
+            this.ValidColorButton.Location = new System.Drawing.Point(186, 75);
+            this.ValidColorButton.Name = "ValidColorButton";
+            this.ValidColorButton.Size = new System.Drawing.Size(459, 29);
+            this.ValidColorButton.TabIndex = 107;
+            this.ValidColorButton.UseVisualStyleBackColor = true;
+            this.ValidColorButton.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // InvalidColorButton
+            // 
+            this.InvalidColorButton.Location = new System.Drawing.Point(186, 110);
+            this.InvalidColorButton.Name = "InvalidColorButton";
+            this.InvalidColorButton.Size = new System.Drawing.Size(459, 29);
+            this.InvalidColorButton.TabIndex = 109;
+            this.InvalidColorButton.UseVisualStyleBackColor = true;
+            this.InvalidColorButton.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(18, 114);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(131, 20);
+            this.label3.TabIndex = 108;
+            this.label3.Text = "INVALID key color:";
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.QuitButton;
-            this.ClientSize = new System.Drawing.Size(657, 244);
+            this.ClientSize = new System.Drawing.Size(657, 314);
+            this.Controls.Add(this.InvalidColorButton);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.ValidColorButton);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.HotKeyGroupBox);
             this.Controls.Add(this.ScriptFolderOpenFileDialogButton);
             this.Controls.Add(this.ScriptFolderTextBox);
@@ -257,5 +301,9 @@
         private Label label5;
         private Label label4;
         private ComboBox KeyComboBox;
+        private Label label2;
+        private Button ValidColorButton;
+        private Button InvalidColorButton;
+        private Label label3;
     }
 }

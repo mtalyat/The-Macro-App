@@ -37,12 +37,18 @@ namespace TheMacroApp
         /// <summary>
         /// The buttons to edit each macro.
         /// </summary>
-        private Button[] _macroButtons;
+        private List<Button> _macroButtons;
+        private Button? _newButton;
 
         /// <summary>
         /// A reference to the configure scripts form. There can only be one.
         /// </summary>
         private ConfigureScriptsForm? _configureForm;
+
+        /// <summary>
+        /// A reference to the settings form. There can only be one.
+        /// </summary>
+        private SettingsForm? _settingsForm;
 
         public MainForm()
         {
@@ -50,10 +56,11 @@ namespace TheMacroApp
             InitializeComponent();
 
             // initialize self
-            Text = MacroApplicationContext.APP_NAME;
+            Text = Application.ProductName.InsertSpaces();
 
             // collect buttons for later use
-            _macroButtons = new Button[0];
+            _macroButtons = new List<Button>();
+            _newButton = null;
         }
 
         #region Macros
@@ -141,7 +148,7 @@ namespace TheMacroApp
         /// <param name="color">The background color of the button.</param>
         /// <param name="handler">The event to call when it is clicked.</param>
         /// <returns>The Button object generated.</returns>
-        private Button CreateHotKeyButton(string text, Color color, MouseEventHandler handler)
+        private Button CreateMacroButton(string text, Color color, MouseEventHandler handler)
         {
             Button button = new Button()
             {
@@ -191,26 +198,58 @@ namespace TheMacroApp
             // get scroll
             int scroll = HotKeysFlowLayoutPanel.VerticalScroll.Value;
 
-            // remove old buttons
-            HotKeysFlowLayoutPanel.Controls.Clear();
-            _macroButtons = new Button[macros.Length];
-
             Button temp;
+            MacroData macro;
+            int updateLength = _macroButtons.Count;
 
-            // create new buttons for each macro data
-            for (int i = 0; i < macros.Length; i++)
+            // add new button if it does not exist
+            if (_newButton == null)
             {
-                MacroData macro = macros[i];
-                Color color = GetMacroButtonColor(macro);
-
-                temp = CreateHotKeyButton(macro.ToString(), color, MacroButton_MouseClick);
-                _macroButtons[i] = temp;
-                HotKeysFlowLayoutPanel.Controls.Add(temp);
+                _newButton= CreateMacroButton("New...", COLOR_DEFAULT, NewMacroButton_MouseClick);
+                HotKeysFlowLayoutPanel.Controls.Add(_newButton);
             }
 
-            // add one last button for adding new hot keys
-            temp = CreateHotKeyButton("New...", COLOR_DEFAULT, NewMacroButton_MouseClick);
-            HotKeysFlowLayoutPanel.Controls.Add(temp);
+            if(macros.Length > _macroButtons.Count)
+            {
+                // add new buttons
+
+                // remove new button temporarily
+                HotKeysFlowLayoutPanel.Controls.RemoveAt(HotKeysFlowLayoutPanel.Controls.Count - 1);
+
+                // add missing buttons
+                for(int i = _macroButtons.Count; i < macros.Length; i++)
+                {
+                    // create new button and add to list
+                    macro = macros[i];
+                    temp = CreateMacroButton(macro.ToString(), GetMacroButtonColor(macro), MacroButton_MouseClick);
+                    _macroButtons.Add(temp);
+                    HotKeysFlowLayoutPanel.Controls.Add(temp);
+                }
+
+                // add new button back
+                HotKeysFlowLayoutPanel.Controls.Add(_newButton);
+            }
+            else if (macros.Length < _macroButtons.Count)
+            {
+                updateLength = macros.Length;
+
+                // remove buttons
+
+                // remove extra buttons
+                for (int i = _macroButtons.Count - 1; i >= macros.Length; i--)
+                {
+                    temp = _macroButtons[i];
+                    _macroButtons.RemoveAt(i);
+                    HotKeysFlowLayoutPanel.Controls.RemoveAt(i);
+                    temp.Dispose();
+                }
+            }
+
+            // update any non-new buttons
+            for (int i = 0; i < updateLength; i++)
+            {
+                UpdateMacroButton(i, macros[i]);
+            }
 
             // reassign scroll
             HotKeysFlowLayoutPanel.VerticalScroll.Value = scroll;
@@ -226,9 +265,9 @@ namespace TheMacroApp
         private void MainForm_Load(object sender, EventArgs e)
         {
             // ensure folder exists
-            if (!Directory.Exists(AppData.FOLDER_PATH))
+            if (!Directory.Exists(Manager.Data.Settings.ScriptFolderPath))
             {
-                Directory.CreateDirectory(AppData.FOLDER_PATH);
+                Directory.CreateDirectory(Manager.Data.Settings.ScriptFolderPath);
             }
 
             // load buttons
@@ -251,7 +290,7 @@ namespace TheMacroApp
         {
             using (Process process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo("explorer.exe", AppData.FOLDER_PATH);
+                process.StartInfo = new ProcessStartInfo("explorer.exe", Manager.Data.Settings.ScriptFolderPath);
                 process.Start();
             }
         }
@@ -261,10 +300,10 @@ namespace TheMacroApp
         /// If left click, the macro will be edited.
         /// If right click, the macro will be deleted.
         /// </summary>
-        private void MacroButton_MouseClick(object? sender, MouseEventArgs e)
+        private void MacroButton_MouseClick(object sender, MouseEventArgs e)
         {
             // get index of macro by using index of button
-            int index = Array.IndexOf(_macroButtons, (Button)sender);
+            int index = _macroButtons.IndexOf((Button)sender);
 
             switch (e.Button)
             {
@@ -300,7 +339,11 @@ namespace TheMacroApp
             {
                 _configureForm = new ConfigureScriptsForm();
                 _configureForm.Show();
-                _configureForm.FormClosed += (object? sender, FormClosedEventArgs e) => { _configureForm = null; };
+                _configureForm.FormClosed += (object? sender, FormClosedEventArgs e) =>
+                {
+                    _configureForm = null;
+                    UpdateMacroList();
+                };
             }
             else
             {
@@ -333,6 +376,24 @@ namespace TheMacroApp
             {
                 control.Size = new Size(HotKeysFlowLayoutPanel.Width - 30, control.Size.Height);
             }
+        }
+
+        /// <summary>
+        /// Opens the settings menu window.
+        /// </summary>
+        private void SettingsButton_Click(object sender, EventArgs e)
+        {
+            if(_settingsForm == null)
+            {
+                _settingsForm = new SettingsForm(Manager.Data.Settings);
+                _settingsForm.Show();
+                _settingsForm.FormClosed += (object? sender, FormClosedEventArgs e) =>
+                {
+                    _settingsForm = null;
+                };
+            }
+
+            _settingsForm.Activate();
         }
 
         #endregion

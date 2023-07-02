@@ -26,7 +26,7 @@ namespace TheMacroApp
         {
             _macroData = macro;
 
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         #region View
@@ -143,6 +143,26 @@ namespace TheMacroApp
             }
         }
 
+        /// <summary>
+        /// If the currently selected file type does not use arguments, update the arguments box.
+        /// </summary>
+        private void UpdateArgumentTextBoxAccessability()
+        {
+            // disable path or args based on what the script data format contains
+            ScriptData? script = Manager.Data.FindScript(Path.GetExtension(PathTextBox.Text));
+
+            if (script != null && !script.Format.Contains(ScriptData.TEMPLATE_ARGS))
+            {
+                // no args
+                ArgumentsTextBox.ReadOnly = true;
+            }
+            else
+            {
+                // no script associated, or yes args
+                ArgumentsTextBox.ReadOnly = false;
+            }
+        }
+
         #endregion
 
         #region Events
@@ -163,6 +183,8 @@ namespace TheMacroApp
             PathTextBox.Text = _macroData.Path;
             ArgumentsTextBox.Text = _macroData.Args;
             TerminalComboBox.SelectedIndex = Array.IndexOf(options, _macroData.TerminalOption);
+
+            UpdateArgumentTextBoxAccessability();
 
             KeyComboBox.SelectedIndex = Array.IndexOf(keys, _macroData.Key.Key);
             AltCheckBox.Checked = _macroData.Key.Modifiers.HasFlag(ModKeys.Alt);
@@ -198,7 +220,7 @@ namespace TheMacroApp
             {
                 Title = $"Select a script to run for the macro.",
                 Filter = GenerateOpenFileDialogFilter(),
-                InitialDirectory = AppData.FOLDER_PATH,
+                InitialDirectory = Manager.Data.Settings.ScriptFolderPath,
                 RestoreDirectory = true,
                 CheckFileExists = true
             };
@@ -259,11 +281,11 @@ namespace TheMacroApp
         }
 
         /// <summary>
-        /// Apply changes to the macro.
+        /// Called when the path changes. Updates the argument input accessability.
         /// </summary>
-        private void ApplyButton_Click(object sender, EventArgs e)
+        private void PathTextBox_TextChanged(object sender, EventArgs e)
         {
-            ApplyValuesToMacro();
+            UpdateArgumentTextBoxAccessability();
         }
 
         #endregion

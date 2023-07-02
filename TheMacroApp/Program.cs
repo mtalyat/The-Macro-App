@@ -33,9 +33,6 @@ namespace TheMacroApp
     /// </summary>
     internal class MacroApplicationContext : ApplicationContext
     {
-        public const string APP_NAME = "The Super Macro App";
-        public const string APP_SYSTEM_NAME = "SuperMacroApp"; // name that is safe to use in file system
-
         public static MacroApplicationContext? ActiveContext { get; private set; }
 
         private NotifyIcon _trayIcon;
@@ -51,7 +48,7 @@ namespace TheMacroApp
             // create menu strip
             ContextMenuStrip strip = new ContextMenuStrip()
             {
-                Name = APP_NAME
+                Name = Application.ProductName
             };
             strip.Items.AddRange(new ToolStripItem[]
             {
@@ -62,7 +59,7 @@ namespace TheMacroApp
             _trayIcon = new NotifyIcon
             {
                 Visible = true,
-                Text = APP_NAME,
+                Text = Application.ProductName,
                 Icon = Resources.Icon,
                 ContextMenuStrip = strip
             };
@@ -71,10 +68,12 @@ namespace TheMacroApp
             // initialize hook for hotkeys, so their input is recognized
             _keyboardHook = new KeyboardHook();
             _keyboardHook.KeyPressed += HotkeyPressed;
-            _keyboardHook.RegisterHotKey(ModKeys.Ctrl | ModKeys.Alt, Keys.M); // default application shortcut
 
             // load macro data
             Manager.Load();
+
+            // load default hotkey for the application
+            Manager.Data.Settings.ApplicationKey.Register();
 
             // register all macro keys
             foreach(MacroData macro in Manager.Data.Macros)

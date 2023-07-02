@@ -25,5 +25,27 @@ namespace TheMacroApp
             Array.Copy(array, offset, result, 0, length);
             return result;
         }
+
+        /// <summary>
+        /// Inserts spaces before any uppercase letters in the string.
+        /// </summary>
+        /// <param name="text">The text to insert spaces into.</param>
+        /// <returns>The string with spaces inserted.</returns>
+        public static string InsertSpaces(this string text)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (char c in text)
+            {
+                if(c >= 'A' && c < 'Z')
+                {
+                    sb.Append(' ');
+                }
+
+                sb.Append(c);
+            }
+
+            return sb.ToString();
+        }
     }
 }

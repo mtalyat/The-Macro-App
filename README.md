@@ -10,13 +10,9 @@ For the moment, installing is rather hands on. An installer will come in the fut
 * Download the most recent release.
 * Unzip any files, if necessary.
 * Run the program.
+* The program will be running in the background by default. Open the app in the system tray, or click Ctrl + Alt + M to open the app.
 
-If you wish to have the program always start when you turn on your computer, please follow these steps:
-* Press the windows button in the bottom left of the screen.
-* Type "Run" and press enter.
-* Enter "shell:startup" and press enter.
-* In the file explorer window that appears, right click, go to new -> shortcut.
-* Select the .exe for the Super Macro App application.
+If you wish to have the program always start when you turn on your computer, please run the program, open it from the system tray (or press Ctrl + Alt + M), open the settings window and click the checkbox to add it to the startup apps. Finally, press done.
 
 ## Usage
 
@@ -52,10 +48,13 @@ The following contains some examples for script configurations and macros.
 ### Script Configurations
 | Name | Extensions | Executable | Command Format |
 | --- | --- | --- | --- |
+| Audio | `.mp3 .wav` | explorer.exe | {file} |
 | Batch | `.bat .cmd` | | {file} {args} |
 | Executable | `.exe` | | {file} {args} |
+| Image | `.png .jpeg .jpg. gif` | explorer.exe | {file} |
 | Python | `.py` | C:\Users\user\AppData\Local\Programs\Python\Python311\python.exe | {file} {args} |
 | Text | `.txt` | notepad.exe | {file} |
+| Video | `.mp4 .mov` | explorer.exe | {file} |
 ### Macros
 | Path | Arguments | Terminal | Hot Key | Description |
 | --- | --- | --- | --- | -- |
@@ -71,6 +70,5 @@ The following contains some examples for script configurations and macros.
 * [ ] Create a way to see the input and output of a script in the terminal, but only if necessary. Macro settings: always show terminal, never show, show if needed. Default to only show if needed.
 * [x] Limit the files that can be selected to only ones that have been configured, by default. Still have All Files as an option.
 * [x] Show what hot keys are valid or invalid on the main window.
-* [ ] Create default script types.
-* [ ] Create an installer.
+* [x] Create default script types.
 * [ ] Create some basic macros for examples.

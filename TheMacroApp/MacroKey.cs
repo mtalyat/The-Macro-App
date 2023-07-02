@@ -58,6 +58,12 @@ namespace TheMacroApp
             _id = -1;
         }
 
+        public MacroKey(Keys key, ModKeys mod)
+        {
+            Key = key;
+            Modifiers = mod;
+        }
+
         /// <summary>
         /// Creates a macro key from the given keyboard event.
         /// </summary>

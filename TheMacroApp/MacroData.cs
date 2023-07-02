@@ -118,11 +118,11 @@ namespace TheMacroApp
                 // no script data, so just print key and file with args
                 if (string.IsNullOrWhiteSpace(Args))
                 {
-                    return $"{Key} -> {System.IO.Path.GetFileName(Path)}";
+                    return $"{Key} -> {Path}";
                 }
                 else
                 {
-                    return $"{Key} -> {System.IO.Path.GetFileName(Path)} {Args}";
+                    return $"{Key} -> {Path} {Args}";
                 }
             }
         }

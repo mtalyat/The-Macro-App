@@ -61,6 +61,36 @@ namespace TheMacroApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {
+        ///    &quot;Scripts&quot;: [
+        ///        {
+        ///            &quot;Name&quot;: &quot;Batch&quot;,
+        ///            &quot;Extensions&quot;: [
+        ///                &quot;.cmd&quot;,
+        ///                &quot;.bat&quot;
+        ///            ],
+        ///            &quot;ExecutablePath&quot;: &quot;&quot;,
+        ///            &quot;Format&quot;: &quot;{file} {args}&quot;
+        ///        },
+        ///        {
+        ///            &quot;Name&quot;: &quot;Executable&quot;,
+        ///            &quot;Extensions&quot;: [
+        ///                &quot;.exe&quot;
+        ///            ],
+        ///            &quot;ExecutablePath&quot;: &quot;&quot;,
+        ///            &quot;Format&quot;: &quot;{file} {args}&quot;
+        ///        },
+        ///        {
+        ///            &quot;Name&quot;: &quot;Python&quot;,
+        ///            &quot;Extensions&quot;: [ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DefaultAppData {
+            get {
+                return ResourceManager.GetString("DefaultAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon Icon {

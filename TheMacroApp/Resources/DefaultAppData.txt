@@ -1,0 +1,61 @@
+{
+    "Scripts": [
+        {
+            "Name": "Audio",
+            "Extensions": [
+                ".mp3", ".wav"
+            ],
+            "ExecutablePath": "explorer.exe",
+            "Format": "{file}"
+        },
+        {
+            "Name": "Batch",
+            "Extensions": [
+                ".cmd",
+                ".bat"
+            ],
+            "ExecutablePath": "",
+            "Format": "{file} {args}"
+        },
+        {
+            "Name": "Executable",
+            "Extensions": [
+                ".exe"
+            ],
+            "ExecutablePath": "",
+            "Format": "{file} {args}"
+        },
+        {
+            "Name": "Image",
+            "Extensions": [
+                ".png", ".jpeg", ".jpg", ".gif", ".bmp"
+            ],
+            "ExecutablePath": "explorer.exe",
+            "Format": "{file}"
+        },
+        {
+            "Name": "Python",
+            "Extensions": [
+                ".py"
+            ],
+            "ExecutablePath": "python",
+            "Format": "{file} {args}"
+        },
+        {
+            "Name": "Text",
+            "Extensions": [
+                ".txt"
+            ],
+            "ExecutablePath": "notepad.exe",
+            "Format": "{file}"
+        },
+        {
+            "Name": "Video",
+            "Extensions": [
+                ".mp4", ".mov"
+            ],
+            "ExecutablePath": "explorer.exe",
+            "Format": "{file}"
+        }
+    ]
+}

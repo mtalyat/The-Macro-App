@@ -23,7 +23,7 @@ namespace TheMacroApp
         /// <summary>
         /// The default format for the command line format.
         /// </summary>
-        private const string DEFAULT_FORMAT = $"{TEMPLATE_FILE} {TEMPLATE_ARGS}";
+        public const string DEFAULT_FORMAT = $"{TEMPLATE_FILE} {TEMPLATE_ARGS}";
 
         /// <summary>
         /// The name of the script.
@@ -53,12 +53,23 @@ namespace TheMacroApp
         /// Creates a new script data.
         /// </summary>
         /// <param name="name"></param>
-        public ScriptData(string name = "")
+        public ScriptData()
         {
-            Name = name;
+            Name = string.Empty;
             Extensions = Array.Empty<string>();
             ExecutablePath = string.Empty;
             Format = DEFAULT_FORMAT;
+        }
+
+        /// <summary>
+        /// Creates a new script data.
+        /// </summary>
+        public ScriptData(string name, string[]? extensions = null, string executablePath = "explorer.exe", string format = DEFAULT_FORMAT)
+        {
+            Name = name;
+            Extensions = extensions ?? Array.Empty<string>();
+            ExecutablePath = executablePath;
+            Format = format;
         }
 
         /// <summary>
@@ -75,7 +86,7 @@ namespace TheMacroApp
             }
 
             // something provided
-            Extensions = extensions.Split(' ').Select(s =>
+            Extensions = extensions.ToLower().Split(' ').Select(s =>
             {
                 if(!s.StartsWith('.'))
                 {
@@ -84,7 +95,7 @@ namespace TheMacroApp
                 {
                     return s;
                 }
-            }).ToArray();
+            }).ToHashSet().ToArray(); // eliminate duplicates?
         }
 
         /// <summary>
@@ -105,7 +116,7 @@ namespace TheMacroApp
         {
             foreach(string e in Extensions)
             {
-                if(e == extension)
+                if(e == extension.ToLower())
                 {
                     return true;
                 }

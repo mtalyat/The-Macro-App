@@ -14,11 +14,6 @@ namespace TheMacroApp
     internal class AppData
     {
         /// <summary>
-        /// The path to the directory for the application data (settings, etc.)
-        /// </summary>
-        public static readonly string FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), MacroApplicationContext.APP_SYSTEM_NAME);
-
-        /// <summary>
         /// The list of loaded macro datas.
         /// </summary>
         [JsonInclude]
@@ -29,6 +24,18 @@ namespace TheMacroApp
         /// </summary>
         [JsonInclude]
         public List<ScriptData> Scripts { get; private set; } = new List<ScriptData>();
+
+        /// <summary>
+        /// The script data to be used if no other scripts can apply.
+        /// </summary>
+        [JsonIgnore]
+        public static readonly ScriptData DefaultScript = new ScriptData("Default", new string[0], "explorer.exe", ScriptData.DEFAULT_FORMAT);
+
+        /// <summary>
+        /// The settings for this application.
+        /// </summary>
+        [JsonInclude]
+        public SettingsData Settings = new SettingsData();
 
         #region Managing
 
@@ -162,7 +169,7 @@ namespace TheMacroApp
         /// </summary>
         /// <param name="extension">The extension type to use to search for the script data.</param>
         /// <returns>The script data that contains the given extension, or null if not found.</returns>
-        public ScriptData? FindScript(string extension)
+        public ScriptData FindScript(string extension)
         {
             foreach(ScriptData data in Scripts)
             {
@@ -174,7 +181,7 @@ namespace TheMacroApp
             }
 
             // not found
-            return null;
+            return DefaultScript;
         }
 
         #endregion

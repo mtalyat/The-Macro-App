@@ -1,13 +1,40 @@
 # Changelog
 
 ## 1.4.0
+* Renamed to just "The Macro App".
+* Updated the icon so it is sage green colored, instead of black, to make it pop more.
+* Changed the Configure button to Configure Scripts Button.
+* Changed the Open Folder button to Open Scripts Folder.
+* Created a settings window, and a way to edit the following settings:
+  * Change if the app should be included in the startup apps list.
+  * Change the default script folder location.
+  * Change the main window open hot key.
+* Moved the app data folder from Local app data to Roaming app data.
+* Moved the app data json file into the general app data folder, so that the version number does not cause issues with saving and loading.
+* Removed the Apply button from the macro configuration window.
+* Added default a script data configuration for the following file types:
+  * Batch
+  * Executable
+  * Python
+  * Text
+  * Image
+  * Video
+  * Audio
+* There is also a constant default for when no script has been set up. It will be opened with explorer.exe, which will default to opening each file type with its respective default application.
+* Made it so the args field for macros will be unable to be edited, if the {args} have been omitted from the format of the script data.
+* Added support for case-insensitive extensions.
+* Changes how buttons are reloaded on the main window.
+* Changed the macro button text to be more informative.
+* Updated the README:
+  * Reflect the new way to add the app to the startup apps list.
+  * New examples of script datas.
 
 ## 1.3.0
 * Updated the main window to have slight color variations if a macro is VALID, INVALID or EMPTY.
-  * VALID is green
-  * INVALID is red
-  * EMPTY is gray
-  * DEFAULT is white
+  * VALID is green.
+  * INVALID is red.
+  * EMPTY is gray.
+  * DEFAULT is white.
 * Updated README to reflect these changes.
 * Updated file selection dialog so it will filter by configured script types.
 

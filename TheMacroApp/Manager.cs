@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TheMacroApp
 {
@@ -14,9 +17,14 @@ namespace TheMacroApp
     internal static class Manager
     {
         /// <summary>
+        /// The location of the app data folder.
+        /// </summary>
+        private static readonly string SAVE_FOLDER = Path.Join(Application.UserAppDataPath, "../");
+
+        /// <summary>
         /// The location of the app data.
         /// </summary>
-        private static readonly string SAVE_FILE = Path.Join(Application.LocalUserAppDataPath, @"appdata.json");
+        private static readonly string SAVE_FILE = Path.Join(SAVE_FOLDER, @"appdata.json");
 
         /// <summary>
         /// The data of the application.
@@ -30,6 +38,9 @@ namespace TheMacroApp
         /// </summary>
         public static void Save()
         {
+            // sort scripts by name
+            Data.Scripts.Sort();
+
             Data.Save(SAVE_FILE);
         }
 
@@ -39,7 +50,19 @@ namespace TheMacroApp
         public static void Load()
         {
             // load data from disc
-            Data = AppData.Load(SAVE_FILE) ?? new AppData();
+            AppData? loadedData = AppData.Load(SAVE_FILE);
+
+            if(loadedData == null)
+            {
+                // load app data from resources
+                // if all else fails, create new empty app data (shouldn't have to do that)
+                Data = JsonSerializer.Deserialize<AppData>(Resources.DefaultAppData) ?? new AppData();
+            }
+            else
+            {
+                // data loaded fine from disk, use that
+                Data = loadedData;
+            }
 
             // sort scripts by name
             Data.Scripts.Sort();
@@ -105,57 +128,59 @@ namespace TheMacroApp
         /// <param name="scriptData">The script data associated with the given macro.</param>
         private static void RunCommand(MacroData macroData, ScriptData scriptData)
         {
-            using (Process process = new Process())
+            Process process = new Process();
+
+            // figure out the file name and arguments...
+            /*
+             * If no executable provided, assume script is an executable:
+             * - FileName = MacroData.Path
+             * - Arguments = MacroData.Args
+             * 
+             * 
+             * 
+             * If executable provided:
+             * - FileName = ScriptData.ExecutablePath
+             * - Arguments = MacroData.ToCommand()
+             */
+
+            string fileName, arguments;
+            if (string.IsNullOrEmpty(scriptData.ExecutablePath))
             {
-                // figure out the file name and arguments...
-                /*
-                 * If no executable provided, assume script is an executable:
-                 * - FileName = MacroData.Path
-                 * - Arguments = MacroData.Args
-                 * 
-                 * 
-                 * 
-                 * If executable provided:
-                 * - FileName = ScriptData.ExecutablePath
-                 * - Arguments = MacroData.ToCommand()
-                 */
-
-                string fileName, arguments;
-                if(string.IsNullOrEmpty(scriptData.ExecutablePath))
-                {
-                    fileName = macroData.Path;
-                    arguments = macroData.Args;
-                }
-                else
-                {
-                    fileName = scriptData.ExecutablePath;
-                    arguments = macroData.ToCommand(scriptData.Format);
-                }
-
-                bool showTerminal = macroData.TerminalOption == TerminalShowOptions.Show;
-
-                ProcessStartInfo info = new ProcessStartInfo()
-                {
-                    FileName = fileName,
-                    Arguments = arguments,
-                    UseShellExecute = false,
-                    RedirectStandardInput = false,
-                    RedirectStandardOutput = false,
-                    RedirectStandardError = false,
-                    CreateNoWindow = !showTerminal,
-                };
-
-                // run command
-                process.StartInfo = info;
-
-                try
-                {
-                    process.Start();
-                } catch (Exception ex)
-                {
-                    ShowError($"Process failed to start: {ex.Message}", "Process failed.");
-                }
+                fileName = macroData.Path;
+                arguments = macroData.Args;
             }
+            else
+            {
+                fileName = scriptData.ExecutablePath;
+                arguments = macroData.ToCommand(scriptData.Format);
+            }
+
+            bool showTerminal = macroData.TerminalOption == TerminalShowOptions.Show;
+
+            ProcessStartInfo info = new ProcessStartInfo()
+            {
+                FileName = fileName,
+                Arguments = arguments,
+                UseShellExecute = false,
+                RedirectStandardInput = false,
+                RedirectStandardOutput = false,
+                RedirectStandardError = false,
+                CreateNoWindow = !showTerminal,
+            };
+
+            // run command
+            process.StartInfo = info;
+
+            try
+            {
+                process.Start();
+            }
+            catch (Exception ex)
+            {
+                ShowError($"Process failed to start: {ex.Message}", "Process failed.");
+            }
+
+            process.Dispose();
         }
 
         #endregion

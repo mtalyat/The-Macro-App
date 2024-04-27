@@ -1,4 +1,4 @@
-# The Super Macro App
+# The Macro App
 A Windows application, meant to be able to create custom macros at the touch of a hot key.
 
 ![The main application screen.](Images/MainApplication.png)
